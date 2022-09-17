@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public static Scene scene;
+
     [SerializeField] private TrailRenderer tr;
     
     private Animator anim;
@@ -106,6 +110,27 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D dragObject = null;
     ///////////////////////////////////////
 
+    //FOR BASHING///////////////////////////
+    [SerializeField] private float Radius;
+    [SerializeField] GameObject BashAbleObj;
+    private bool NearToBashAbleObj;
+    private bool isChoosingDir;
+    private bool isBashing;
+    private bool canBash;
+    [SerializeField] private float BashPower;
+    [SerializeField] private float BashTime;
+    [SerializeField] private GameObject UpArrow;
+    [SerializeField] private GameObject DownArrow;
+    [SerializeField] private GameObject ForwardArrow;
+    [SerializeField] private GameObject BackwardArrow;
+    [SerializeField] private GameObject EArrow;
+    [SerializeField] private GameObject QArrow;
+    [SerializeField] private GameObject ZArrow;
+    [SerializeField] private GameObject CArrow;
+    Vector3 BashDir;
+    private float BashTimeReset;
+    ////////////////////////////////////////
+
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
@@ -114,6 +139,9 @@ public class PlayerController : MonoBehaviour
         wallJumpDirection.Normalize();
         anim=GetComponent<Animator>();
         respawnPoint=rb.position;
+        BashTimeReset=BashTime;
+        scene=SceneManager.GetActiveScene();
+        //Debug.Log(scene.name);
     }
 
     void Update()
@@ -127,6 +155,10 @@ public class PlayerController : MonoBehaviour
         CheckJump();
         CheckLedgeClimb();
         CheckDashJump();
+        CheckBash();
+        Bash();
+        SlowMotion();
+
         //TO MOVE RESPAWN POINT///
         respawnDetector.transform.position = new Vector2(rb.position.x,respawnDetector.transform.position.y);
         //////////////////////////
@@ -144,7 +176,11 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.tag=="Respawn")
         {
+            FindObjectOfType<AudioManager>().Play("Dead");
             rb.position=respawnPoint;
+            dragging=false;
+            isPushing=false;
+            isPulling=false;
             dragging=false;
             isPushing=false;
             isPulling=false;
@@ -193,8 +229,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        ApplyMovement();
-        CheckSurroundings();
+        if(isBashing==false)
+        {
+            ApplyMovement();
+            CheckSurroundings();
+        }
     }
 
     private void CheckMovementDirection()
@@ -211,7 +250,7 @@ public class PlayerController : MonoBehaviour
 
     private void Flip()
     {
-        if(!isWallSliding && !dragging && canFlip)
+        if(!isWallSliding && !dragging && canFlip && !PauseMenuController.isPaused)
         {
             facingDirection*=-1;
             isFacingRight=!isFacingRight;
@@ -231,6 +270,10 @@ public class PlayerController : MonoBehaviour
 
                 dragObject.constraints = RigidbodyConstraints2D.None;
                 dragObject.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+                //dragObject.constraints = RigidbodyConstraints2D.FreezePositionY;
+                //rb.constraints=RigidbodyConstraints2D.FreezePositionY;
+                rb.constraints=RigidbodyConstraints2D.FreezeRotation;
 
                 //dragObject.constraints = RigidbodyConstraints2D.FreezePositionY;
                 //rb.constraints=RigidbodyConstraints2D.FreezePositionY;
@@ -304,8 +347,8 @@ public class PlayerController : MonoBehaviour
             {
                 tr.emitting=true;
                 Dash();
-                SoundManagerScript.PlaySound("Dash");
-                //Debug.Log("DASH");
+                FindObjectOfType<AudioManager>().Play("Dash");
+                
             }
             
         }
@@ -350,6 +393,7 @@ public class PlayerController : MonoBehaviour
             {
                 WallJump();
                 //Debug.Log("WALL JUMP");
+                //Debug.Log("WALL JUMP");
             }
             else if(isGrounded || amountOfJumpsleft!=0)
             {
@@ -382,10 +426,18 @@ public class PlayerController : MonoBehaviour
 
     private void NormalJump()
     {
-        if(canNormalJump && (!isPulling||!isPushing))
+        if(canNormalJump && (!isPulling||!isPushing) && (!isPulling||!isPushing))
         {
             CreateDust();
-            SoundManagerScript.PlaySound("Jump");
+            if(amountOfJumpsleft==2)
+            {
+                FindObjectOfType<AudioManager>().Play("Jump");
+            }
+            if(amountOfJumpsleft==1)
+            {
+                FindObjectOfType<AudioManager>().Play("Jump2");
+            }
+            
             rb.velocity=new Vector2(rb.velocity.x, jumpForce);
             amountOfJumpsleft--;
             jumpTimer=0;
@@ -399,6 +451,9 @@ public class PlayerController : MonoBehaviour
         if(canWallJump)
         {
             rb.velocity=new Vector2(rb.velocity.x,0.0f);
+            FindObjectOfType<AudioManager>().Play("Jump");
+
+            
             isWallSliding=false;
             amountOfJumpsleft=1;//FIXES INFINITE WALL JUMP EXPLOIT
             amountOfJumpsleft--;
@@ -514,6 +569,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
         Gizmos.DrawLine(wallCheck.position,new Vector3(wallCheck.position.x + wallCheckDistance,wallCheck.position.y,wallCheck.position.z));
+
+        Gizmos.DrawWireSphere(transform.position,Radius);
+
+        Gizmos.DrawWireSphere(transform.position,Radius);
     }
 
     public void setDragObject(Rigidbody2D obj)
@@ -558,6 +617,310 @@ public class PlayerController : MonoBehaviour
             
         }
         
+    }
+
+    public bool inFunction;
+    public string Bashdirection;
+
+    public void CheckBash()
+    {
+        if(inFunction)
+        {
+           if(Input.GetKeyDown(KeyCode.D))
+           {
+                ForwardArrow.transform.position = BashAbleObj.transform.transform.position;
+  
+                ForwardArrow.SetActive(true);
+
+                UpArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                EArrow.SetActive(false);
+                QArrow.SetActive(false);
+                ZArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="Forward";
+
+           }
+           if(Input.GetKey(KeyCode.E))
+           {
+                EArrow.transform.position = BashAbleObj.transform.transform.position;
+  
+                EArrow.SetActive(true);
+
+                ForwardArrow.SetActive(false);
+                UpArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                QArrow.SetActive(false);
+                ZArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="E";  
+
+           }
+           if(Input.GetKey(KeyCode.Q))
+           {
+                QArrow.transform.position = BashAbleObj.transform.transform.position;
+  
+                QArrow.SetActive(true);
+
+                EArrow.SetActive(false);
+                ForwardArrow.SetActive(false);
+                UpArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                ZArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="Q"; 
+
+           }
+           if(Input.GetKeyDown(KeyCode.A))
+           {
+                BackwardArrow.transform.position = BashAbleObj.transform.transform.position;
+
+                BackwardArrow.SetActive(true);
+
+                EArrow.SetActive(false);
+                ForwardArrow.SetActive(false);
+                UpArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                QArrow.SetActive(false);
+                ZArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="Backward";
+           }
+           if(Input.GetKeyDown(KeyCode.S))
+           {
+                DownArrow.transform.position = BashAbleObj.transform.transform.position;
+                
+                DownArrow.SetActive(true);
+                
+                EArrow.SetActive(false);
+                ForwardArrow.SetActive(false);
+                UpArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                QArrow.SetActive(false);
+                ZArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="Down";
+           }
+           if(Input.GetKeyDown(KeyCode.W))
+           {
+                UpArrow.transform.position = BashAbleObj.transform.transform.position;
+
+                UpArrow.SetActive(true);
+                
+                ForwardArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                EArrow.SetActive(false);
+                QArrow.SetActive(false);
+                ZArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="Up";
+           }
+           if(Input.GetKeyDown(KeyCode.Z))
+           {
+                ZArrow.transform.position = BashAbleObj.transform.transform.position;
+
+                ZArrow.SetActive(true);
+
+                ForwardArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                EArrow.SetActive(false);
+                QArrow.SetActive(false);
+                UpArrow.SetActive(false);
+                CArrow.SetActive(false);
+
+                Bashdirection="Z";
+           }
+
+           if(Input.GetKeyDown(KeyCode.C))
+           {
+                CArrow.transform.position = BashAbleObj.transform.transform.position;
+
+                CArrow.SetActive(true);
+
+                ForwardArrow.SetActive(false);
+                BackwardArrow.SetActive(false);
+                DownArrow.SetActive(false);
+                EArrow.SetActive(false);
+                QArrow.SetActive(false);
+                UpArrow.SetActive(false);
+                ZArrow.SetActive(false);
+
+                Bashdirection="C";
+           }
+        }
+        
+    }
+
+    public float SlowMotionTimer=0.05f;
+    public bool StartSloMoTimer=false;
+
+
+    private void SlowMotion()
+    {
+        if(StartSloMoTimer)
+        {
+            SlowMotionTimer-=Time.deltaTime;
+            if(SlowMotionTimer == 0.0f)
+            {
+                
+                Time.timeScale=0f;
+                Time.fixedDeltaTime = 0.5f * Time.timeScale;
+
+                StartSloMoTimer=false;
+                SlowMotionTimer=0.05f;
+            }
+            else if(SlowMotionTimer <= 0.05f && SlowMotionTimer > 0.04f )
+            {
+                Time.timeScale=0.1f;
+                Time.fixedDeltaTime = 0.5f * Time.timeScale;
+            }
+            else if(SlowMotionTimer <= 0.04f && SlowMotionTimer > 0.03f )
+            {
+                Time.timeScale=0.08f;
+                Time.fixedDeltaTime = 0.5f * Time.timeScale;
+            }
+            else if(SlowMotionTimer <= 0.03f && SlowMotionTimer > 0.02f )
+            {
+                Time.timeScale=0.06f;
+                Time.fixedDeltaTime = 0.5f * Time.timeScale;
+            }
+            else if(SlowMotionTimer <= 0.02f && SlowMotionTimer > 0.01f )
+            {
+                Time.timeScale=0.04f;
+                Time.fixedDeltaTime = 0.5f * Time.timeScale;
+            }
+            else if(SlowMotionTimer <= 0.01f && SlowMotionTimer > 0f )
+            {
+                Time.timeScale=0.02f;
+                Time.fixedDeltaTime = 0.5f * Time.timeScale;
+            }
+        }
+    }
+
+    public void Bash()
+    {
+        RaycastHit2D[] Rays = Physics2D.CircleCastAll(transform.position, Radius, Vector3.forward);
+        foreach (RaycastHit2D ray in Rays)
+        {
+            NearToBashAbleObj=false;
+            if(ray.collider.tag == "Bashable")
+            {
+                canBash=true;
+                NearToBashAbleObj=true;
+                BashAbleObj = ray.collider.transform.gameObject;
+                break;
+            }
+        }
+        if(NearToBashAbleObj && canBash)
+        {
+            if(Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                FindObjectOfType<AudioManager>().Play("BashEnter");
+                
+                Time.timeScale=0f;
+                Time.fixedDeltaTime = 0.01f * Time.timeScale;
+                
+                isChoosingDir=true;
+                inFunction=true;
+            }
+            else if(isChoosingDir && Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                FindObjectOfType<AudioManager>().Play("BashExit");
+                
+                
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.01f * Time.timeScale;
+                
+                inFunction=false;
+                isChoosingDir=false;
+                isBashing=true;
+            }
+        }
+
+        if(isBashing)
+        {
+            ForwardArrow.SetActive(false);
+            UpArrow.SetActive(false);
+            BackwardArrow.SetActive(false);
+            DownArrow.SetActive(false);
+            EArrow.SetActive(false);
+            QArrow.SetActive(false);
+            ZArrow.SetActive(false);
+            CArrow.SetActive(false);
+
+            //Debug.Log(Bashdirection);
+            if(BashTime > 0)
+            {
+                BashTime -= Time.deltaTime;
+                if(Bashdirection=="Up")
+                {
+                    rb.velocity = new Vector2(0,BashPower);
+                }
+                else if(Bashdirection=="Down")
+                {
+                    rb.velocity = new Vector2(0,-BashPower);
+                }
+                else if(Bashdirection=="Forward")
+                {
+                    rb.velocity = new Vector2(BashPower,0);
+                }
+                else if(Bashdirection=="Backward")
+                {
+                    rb.velocity = new Vector2(-BashPower,0);
+                }
+                else if(Bashdirection=="E")
+                {
+                    if(!isFacingRight)
+                    {
+                        Flip();
+                    }
+                    rb.velocity = new Vector2(BashPower-(BashPower/4),BashPower-(BashPower/4));
+                }
+                else if(Bashdirection=="Q")
+                {
+                    if(isFacingRight)
+                    {
+                        Flip();
+                    }
+                    rb.velocity = new Vector2(-BashPower-(BashPower/4),BashPower-(BashPower/4));
+                }
+                else if(Bashdirection=="Z")
+                {
+                    if(isFacingRight)
+                    {
+                        Flip();
+                    }
+                    rb.velocity = new Vector2(-BashPower-(BashPower/4),-BashPower-(BashPower/4));
+                }
+                else if(Bashdirection=="C")
+                {
+                    if(!isFacingRight)
+                    {
+                        Flip();
+                    }
+                    rb.velocity = new Vector2(BashPower-(BashPower/4),-BashPower-(BashPower/4));
+                }
+                amountOfJumpsleft=2;
+            }
+            else
+            {
+                isBashing=false;
+                BashTime=BashTimeReset;
+                rb.velocity=new Vector2(rb.velocity.x-(rb.velocity.x/4),rb.velocity.y-(rb.velocity.y/4));
+                canBash=false;
+            }
+        }
     }
     ///////////////////////////////////////////////
     

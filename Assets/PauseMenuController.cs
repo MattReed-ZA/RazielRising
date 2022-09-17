@@ -9,9 +9,32 @@ public class PauseMenuController : MonoBehaviour
 
     public GameObject pauseMenuUI;
 
+    public static Scene currentScene;
+    [SerializeField] GameObject btn;
+    
+
+    void Start()
+    {
+        currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+        Debug.Log(sceneName);
+
+
+
+
+
+        if (sceneName != "GameScene")//load skip button only for tutorial
+        {
+            btn.SetActive(false);
+        }
+
+
+    }
+
     // Update is called once per frame
     void Update()
     {
+        
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
@@ -42,6 +65,16 @@ public class PauseMenuController : MonoBehaviour
     public void Quit()
     {
         SceneManager.LoadScene("MenuScene");
+        if(isPaused)
+        {
+            Time.timeScale = 1f;
+            isPaused = false;
+        }
+    }
+
+    public void Skip()
+    {
+        SceneManager.LoadScene("GameScene 1");
         if(isPaused)
         {
             Time.timeScale = 1f;
