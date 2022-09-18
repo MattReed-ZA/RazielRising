@@ -23252,17 +23252,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c073d86dd86019040b6c15ec0c31463d, type: 3}
---- !u!114 &826324266 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4957407944670309141, guid: c073d86dd86019040b6c15ec0c31463d, type: 3}
-  m_PrefabInstance: {fileID: 826324265}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &826324267 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1973275970531620181, guid: c073d86dd86019040b6c15ec0c31463d, type: 3}
@@ -27860,6 +27849,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: crossFadeObj
+      value: 
+      objectReference: {fileID: 826324267}
     - target: {fileID: 9015541730376358974, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -28637,7 +28630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crossFadeObj: {fileID: 826324267}
-  progressBar: {fileID: 826324266}
 --- !u!61 &1277181913
 BoxCollider2D:
   m_ObjectHideFlags: 0
