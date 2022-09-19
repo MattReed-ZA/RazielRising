@@ -11,18 +11,14 @@ public class PauseMenuController : MonoBehaviour
 
     public static Scene currentScene;
     [SerializeField] GameObject btn;
-    
-    public Animator crossFadeObj;
+
+    public LevelLoader levelLoadr;    
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
-        Debug.Log(sceneName);
-
-
-
-
+        //Debug.Log(sceneName);
 
         if (sceneName != "GameScene")//load skip button only for tutorial
         {
@@ -65,7 +61,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Quit()
     {
-        //LoadNextLevel("MenuScene");
+        //levelLoadr.LoadNextLevel("MenuScene");
         SceneManager.LoadScene("MenuScene");
         if(isPaused)
         {
@@ -76,24 +72,12 @@ public class PauseMenuController : MonoBehaviour
 
     public void Skip()
     {
-        //LoadNextLevel("GameScene 1");
+        //levelLoadr.LoadNextLevel("GameScene 1");
         SceneManager.LoadScene("GameScene 1");
         if(isPaused)
         {
             Time.timeScale = 1f;
             isPaused = false;
         }
-    }
-
-    public void LoadNextLevel(string s)
-    {
-        StartCoroutine(LoadLevel(s));
-    }
-
-    IEnumerator LoadLevel(string s)
-    {
-        crossFadeObj.SetTrigger("PlayCrossFadeAnimation");
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadScene(s);
     }
 }

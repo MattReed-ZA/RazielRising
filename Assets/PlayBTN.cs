@@ -6,47 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class PlayBTN : MonoBehaviour
 {
-    public Animator crossFadeObj;
-    //public Slider progressBar;
+    public LevelLoader levelLoadr;
 
     public void PlayGame()
     {
-        LoadNextLevel();
+        levelLoadr.LoadNextLevel(); 
     }
 
     public void QuitGame()
     {
         Application.Quit();
     }
-
-    public void LoadNextLevel()
-    {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex+1));
-    }
-
-    IEnumerator LoadLevel(int i)
-    {
-        crossFadeObj.SetTrigger("StartCrossFade");
-        yield return new WaitForSeconds(1);
-        SceneManager.LoadScene(i);
-    }
-
-    //Code To Be Used Later in Life
-    /* IEnumerator LoadAsyncronously(int i)
-    {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(i);
-
-        crossFadeObj.SetTrigger("PlayCrossFadeAnimation");
-
-        while(!operation.isDone)
-        {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
-
-            progressBar.value = progress;
-
-            yield return null;
-        }
-
-        crossFadeObj.SetTrigger("StartCrossFade");
-    } */
 }
