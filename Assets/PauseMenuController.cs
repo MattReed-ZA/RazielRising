@@ -11,17 +11,14 @@ public class PauseMenuController : MonoBehaviour
 
     public static Scene currentScene;
     [SerializeField] GameObject btn;
-    
+
+    public LevelLoader levelLoadr;    
 
     void Start()
     {
         currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
-        Debug.Log(sceneName);
-
-
-
-
+        //Debug.Log(sceneName);
 
         if (sceneName != "GameScene")//load skip button only for tutorial
         {
@@ -64,6 +61,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Quit()
     {
+        //levelLoadr.LoadNextLevel("MenuScene");
         SceneManager.LoadScene("MenuScene");
         if(isPaused)
         {
@@ -74,6 +72,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Skip()
     {
+        //levelLoadr.LoadNextLevel("GameScene 1");
         SceneManager.LoadScene("GameScene 1");
         if(isPaused)
         {

@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class PlayBTN : MonoBehaviour
 {
+    public LevelLoader levelLoadr;
+
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        levelLoadr.LoadNextLevel(); 
     }
 
     public void QuitGame()

@@ -115,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 9015541728476479523}
   btn: {fileID: 9015541729840806605}
+  levelLoadr: {fileID: 3884310851339474700, guid: c073d86dd86019040b6c15ec0c31463d, type: 3}
 --- !u!1 &1885575411305198635
 GameObject:
   m_ObjectHideFlags: 0

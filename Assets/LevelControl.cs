@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelControl : MonoBehaviour
 {
+    public LevelLoader levelLoadr;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,7 @@ public class LevelControl : MonoBehaviour
     {
         if(other.tag=="Player")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);            
+            levelLoadr.LoadNextLevel();            
         }
         else
         {
