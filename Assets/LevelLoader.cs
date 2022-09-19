@@ -15,14 +15,32 @@ public class LevelLoader : MonoBehaviour
     {
         gameSceneName = sceneName;
         buildIndex = -1;
-        crossFadeObj.SetTrigger("StartCrossFade");
+
+        if(crossFadeObj.gameObject.activeSelf && crossFadeObj.isActiveAndEnabled)
+        {
+            crossFadeObj.SetTrigger("StartCrossFade");
+        }
+        else{
+            Debug.Log("This is the animator state in LevelLoader: " + crossFadeObj.gameObject.activeSelf);
+            gameObject.SetActive(true);
+            crossFadeObj.SetTrigger("StartCrossFade");
+        }
     }
 
     public void fadeToNextLevel(int index)
     {
         buildIndex = index;
         gameSceneName = "";
-        crossFadeObj.SetTrigger("StartCrossFade");
+
+        if(crossFadeObj.gameObject.activeSelf && crossFadeObj.isActiveAndEnabled)
+        {
+            crossFadeObj.SetTrigger("StartCrossFade");
+        }
+        else{
+            Debug.Log("This is the animator state in LevelLoader: " + crossFadeObj.gameObject.activeSelf);
+            gameObject.SetActive(true);
+            crossFadeObj.SetTrigger("StartCrossFade");
+        }
     }
 
     public void onFadeComplete()

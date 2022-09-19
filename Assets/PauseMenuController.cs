@@ -61,7 +61,14 @@ public class PauseMenuController : MonoBehaviour
 
     public void Quit()
     {
-        levelLoadr.fadeToLevel("MenuScreen");
+        if(gameObject.activeSelf)
+        {
+            levelLoadr.fadeToLevel("MenuScene");
+        }
+        else{
+            Debug.Log("This is the animator state in PauseMenuController: " + gameObject.activeSelf);
+        }
+
         //SceneManager.LoadScene("MenuScene");
         if(isPaused)
         {
@@ -72,7 +79,14 @@ public class PauseMenuController : MonoBehaviour
 
     public void Skip()
     {
-        levelLoadr.fadeToLevel("GameScene 1");
+        if(gameObject.activeSelf)
+        {
+            levelLoadr.fadeToLevel("GameScene 1");
+        }
+        else{
+            Debug.Log("This is the animator state in PauseMenuController: " + gameObject.activeSelf);
+        }
+
         //SceneManager.LoadScene("GameScene 1");
         if(isPaused)
         {
