@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1973275969405038797}
   - component: {fileID: 3884310851339474700}
+  - component: {fileID: 4906600951628036857}
   m_Layer: 5
   m_Name: LevelLoader
   m_TagString: Untagged
@@ -123,7 +124,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921b27fae80fc364e945de86374dbfad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crossFadeObj: {fileID: 4269776107428303457}
+  crossFadeObj: {fileID: 4906600951628036857}
+--- !u!95 &4906600951628036857
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973275969405038798}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8c60b84a89d63c346af623690e97844d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1973275969536015043
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +245,6 @@ GameObject:
   - component: {fileID: 1973275970531620182}
   - component: {fileID: 1973275970531620183}
   - component: {fileID: 1973275970531620176}
-  - component: {fileID: 4269776107428303457}
   m_Layer: 5
   m_Name: CrossFade
   m_TagString: Untagged
@@ -314,22 +333,3 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!95 &4269776107428303457
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1973275970531620178}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b08c49fb2c92b024ea6333972314beac, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

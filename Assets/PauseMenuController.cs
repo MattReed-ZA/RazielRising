@@ -61,8 +61,8 @@ public class PauseMenuController : MonoBehaviour
 
     public void Quit()
     {
-        //levelLoadr.LoadNextLevel("MenuScene");
-        SceneManager.LoadScene("MenuScene");
+        levelLoadr.fadeToLevel("MenuScreen");
+        //SceneManager.LoadScene("MenuScene");
         if(isPaused)
         {
             Time.timeScale = 1f;
@@ -72,8 +72,8 @@ public class PauseMenuController : MonoBehaviour
 
     public void Skip()
     {
-        //levelLoadr.LoadNextLevel("GameScene 1");
-        SceneManager.LoadScene("GameScene 1");
+        levelLoadr.fadeToLevel("GameScene 1");
+        //SceneManager.LoadScene("GameScene 1");
         if(isPaused)
         {
             Time.timeScale = 1f;
