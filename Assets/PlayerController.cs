@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
     ///////////////////////////////////
 
     //FOR RESPAWNING///////////////////
-    private Vector3 respawnPoint;
+    public Vector3 respawnPoint;
     public GameObject respawnDetector;
     ///////////////////////////////////
 

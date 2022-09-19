@@ -10,7 +10,9 @@ public class PauseMenuController : MonoBehaviour
     public GameObject pauseMenuUI;
 
     public static Scene currentScene;
-    [SerializeField] GameObject btn;
+    [SerializeField] GameObject SkipTutorialBtn;
+    [SerializeField] GameObject SkipBtn;
+    [SerializeField] GameObject GameSavedText;
 
     public LevelLoader levelLoadr;    
 
@@ -22,7 +24,10 @@ public class PauseMenuController : MonoBehaviour
 
         if (sceneName != "GameScene")//load skip button only for tutorial
         {
-            btn.SetActive(false);
+            SkipTutorialBtn.SetActive(false);
+        }
+        else{
+            SkipBtn.SetActive(true);
         }
 
 
@@ -77,7 +82,7 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    public void Skip()
+    public void SkipTutorial()
     {
         if(gameObject.activeSelf)
         {
@@ -93,5 +98,10 @@ public class PauseMenuController : MonoBehaviour
             Time.timeScale = 1f;
             isPaused = false;
         }
+    }
+
+    public void SaveGame()
+    {
+        
     }
 }
