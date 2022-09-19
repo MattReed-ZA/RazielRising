@@ -25,6 +25,8 @@ public class AudioManager : MonoBehaviour
             s.source.clip = s.clip;
 
             s.source.volume=s.volume;
+
+            s.source.loop=s.loop;
         }
     }
 
@@ -32,10 +34,16 @@ public class AudioManager : MonoBehaviour
     {
         Sound s=Array.Find(sounds,sound=>sound.name==name);
         s.source.Play();
-        //Debug.Log("From Here");
+
         if(s==null)
         {
             Debug.LogWarning("Sound :"+ name +"not found");
         }
+    }
+
+    public void Stop(string name)
+    {
+        Sound s=Array.Find(sounds,sound=>sound.name==name);
+        s.source.Stop();
     }
 }

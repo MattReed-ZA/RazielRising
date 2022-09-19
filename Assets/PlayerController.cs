@@ -94,6 +94,14 @@ public class PlayerController : MonoBehaviour
     {
         dust.Play();
     }
+
+    public ParticleSystem bashObjRelease;
+
+    void CreateBashDust()
+    {
+        bashObjRelease.Play();
+    }
+   
     ///////////////////////////////////
 
     //FOR RESPAWNING///////////////////
@@ -158,6 +166,7 @@ public class PlayerController : MonoBehaviour
         CheckBash();
         Bash();
         SlowMotion();
+        BugFixes();
 
         //TO MOVE RESPAWN POINT///
         respawnDetector.transform.position = new Vector2(rb.position.x,respawnDetector.transform.position.y);
@@ -184,10 +193,12 @@ public class PlayerController : MonoBehaviour
             dragging=false;
             isPushing=false;
             isPulling=false;
+            isBashing=false;
         }
         else if(collision.tag=="Checkpoint")
         {
             respawnPoint=rb.position;
+            FindObjectOfType<AudioManager>().Play("Checkpoint");
         }
         else if(collision.tag == "Draggable")
         {
@@ -827,7 +838,7 @@ public class PlayerController : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Mouse1))
             {
                 FindObjectOfType<AudioManager>().Play("BashEnter");
-                
+                FindObjectOfType<AudioManager>().Play("InSM");
                 Time.timeScale=0f;
                 Time.fixedDeltaTime = 0.01f * Time.timeScale;
                 
@@ -836,9 +847,9 @@ public class PlayerController : MonoBehaviour
             }
             else if(isChoosingDir && Input.GetKeyUp(KeyCode.Mouse1))
             {
+                FindObjectOfType<AudioManager>().Stop("InSM");
                 FindObjectOfType<AudioManager>().Play("BashExit");
-                
-                
+                CreateBashDust();
                 Time.timeScale = 1f;
                 Time.fixedDeltaTime = 0.01f * Time.timeScale;
                 
@@ -923,6 +934,16 @@ public class PlayerController : MonoBehaviour
         }
     }
     ///////////////////////////////////////////////
+
+    //NEW STUFF AFTER D6///////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void BugFixes()
+    {
+        if(isGrounded && isTouchingWall)
+        {
+            isWallSliding=false;
+        }
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
                            
 }
