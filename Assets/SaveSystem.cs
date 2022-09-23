@@ -26,7 +26,7 @@ public static class SaveSystem
         }
    }
 
-   public static PlayerData loadPlayer()
+   public static PlayerData LoadPlayer()
    {
         string path = Application.persistentDataPath + "/player.data";
 

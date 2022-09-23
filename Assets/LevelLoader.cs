@@ -43,6 +43,13 @@ public class LevelLoader : MonoBehaviour
         }
     }
 
+    public void fade(int index)
+    {
+        buildIndex = index;
+        gameSceneName = "";
+        crossFadeObj.SetTrigger("StartCrossFade");
+    }
+
     public void onFadeComplete()
     {
         if(buildIndex != -1)

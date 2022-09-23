@@ -109,6 +109,63 @@ public class PlayerController : MonoBehaviour
     public GameObject respawnDetector;
     ///////////////////////////////////
 
+    //FOR SAVING & LOADING//////////////
+    [SerializeField] GameObject GameSavedText;
+    public LevelLoader lvlLdr;
+    public PauseMenuController pauseMenu;
+    bool isSavedTextActive = false;
+    float timer = 0.1f;
+
+    void checkGameSavedText()
+    {
+        if(isSavedTextActive)
+        {
+            timer -= Time.deltaTime;
+            //Debug.Log("The timer is: " + timer);
+            if(timer <= 0)
+            {
+                isSavedTextActive = false;
+                GameSavedText.SetActive(false);
+                //Debug.Log("Timer reached");
+            }
+        }
+    }
+
+    public void saveGame()
+    {
+        bool isSaved = SaveSystem.SavePlayer(this);
+
+        if(isSaved)
+        {
+            GameSavedText.SetActive(true);
+            isSavedTextActive = true;
+        }
+    }
+
+    public void loadGame()
+    {
+        PlayerData loadData = SaveSystem.LoadPlayer();
+        Debug.Log(loadData);
+        if(loadData.lastBuildIndex != SceneManager.GetActiveScene().buildIndex)
+        {
+            Time.timeScale = 1f;
+            lvlLdr.fadeToNextLevel(loadData.lastBuildIndex);
+            pauseMenu.Resume();
+        }
+        else{
+            Time.timeScale = 1f;
+            //lvlLdr.fade(loadData.lastBuildIndex);
+            pauseMenu.Resume();
+        }
+        Vector3 position;
+        position.x = loadData.lastCheckpoint[0];
+        position.y = loadData.lastCheckpoint[1];
+        position.z = loadData.lastCheckpoint[2];
+
+        transform.position = position;
+    }
+    /////////////////////////////////
+
     //FOR PULLING & PUSHING//////////////////
     private bool isPulling = false;
     private bool isPushing = false;
@@ -154,6 +211,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        checkGameSavedText();
         CheckInput();
         CheckMovementDirection();
         UpdateAnimations();

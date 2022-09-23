@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -9,10 +10,12 @@ public class PauseMenuController : MonoBehaviour
 
     public GameObject pauseMenuUI;
 
+    public PlayerController player;
+
     public static Scene currentScene;
     [SerializeField] GameObject SkipTutorialBtn;
     [SerializeField] GameObject SkipBtn;
-    [SerializeField] GameObject GameSavedText;
+    [SerializeField] GameObject LoadBtn;
 
     public LevelLoader levelLoadr;    
 
@@ -30,6 +33,15 @@ public class PauseMenuController : MonoBehaviour
             SkipBtn.SetActive(true);
         }
 
+        string path = Application.persistentDataPath + "/player.data";
+
+        if(File.Exists(path))
+        {
+            LoadBtn.SetActive(true);
+        }
+        else{
+            LoadBtn.SetActive(false);
+        }
 
     }
 
@@ -98,10 +110,5 @@ public class PauseMenuController : MonoBehaviour
             Time.timeScale = 1f;
             isPaused = false;
         }
-    }
-
-    public void SaveGame()
-    {
-        
     }
 }
