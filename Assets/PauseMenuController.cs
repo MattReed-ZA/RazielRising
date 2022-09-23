@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -9,8 +10,12 @@ public class PauseMenuController : MonoBehaviour
 
     public GameObject pauseMenuUI;
 
+    public PlayerController player;
+
     public static Scene currentScene;
-    [SerializeField] GameObject btn;
+    [SerializeField] GameObject SkipTutorialBtn;
+    [SerializeField] GameObject SkipBtn;
+    [SerializeField] GameObject LoadBtn;
 
     public LevelLoader levelLoadr;    
 
@@ -22,9 +27,21 @@ public class PauseMenuController : MonoBehaviour
 
         if (sceneName != "GameScene")//load skip button only for tutorial
         {
-            btn.SetActive(false);
+            SkipTutorialBtn.SetActive(false);
+        }
+        else{
+            SkipBtn.SetActive(true);
         }
 
+        string path = Application.persistentDataPath + "/player.data";
+
+        if(File.Exists(path))
+        {
+            LoadBtn.SetActive(true);
+        }
+        else{
+            LoadBtn.SetActive(false);
+        }
 
     }
 
@@ -77,7 +94,7 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    public void Skip()
+    public void SkipTutorial()
     {
         if(gameObject.activeSelf)
         {

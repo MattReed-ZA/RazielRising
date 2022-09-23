@@ -11491,6 +11491,54 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4806441181498535257, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1365198329}
+    - target: {fileID: 4806441181498535257, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: saveGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806441181498535257, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1365198329}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: loadGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7818414654380534109, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7888456255026948809, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015541728476479523, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: levelLoadr
       value: 
@@ -11585,6 +11633,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a645e98929320a409e583d38409b523, type: 3}
+--- !u!1 &514982558 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7888456255026948809, guid: 7a645e98929320a409e583d38409b523, type: 3}
+  m_PrefabInstance: {fileID: 514982557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &514982559 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
+  m_PrefabInstance: {fileID: 514982557}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9448140e263978a499554e1330f630ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -20635,7 +20699,11 @@ MonoBehaviour:
   distanceBetweenImages: 0.1
   dust: {fileID: 239632767}
   bashObjRelease: {fileID: 0}
+  respawnPoint: {x: 0, y: 0, z: 0}
   respawnDetector: {fileID: 231272223}
+  GameSavedText: {fileID: 514982558}
+  lvlLdr: {fileID: 2018681619}
+  pauseMenu: {fileID: 514982559}
   Radius: 2.12
   BashAbleObj: {fileID: 0}
   BashPower: 30
