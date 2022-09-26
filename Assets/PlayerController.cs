@@ -144,8 +144,9 @@ public class PlayerController : MonoBehaviour
 
     public void loadGame()
     {
+        SaveSystem.SetLoadFlag(true);
         PlayerData loadData = SaveSystem.LoadPlayer();
-        Debug.Log(loadData);
+        
         if(loadData.lastBuildIndex != SceneManager.GetActiveScene().buildIndex)
         {
             Time.timeScale = 1f;
@@ -154,15 +155,9 @@ public class PlayerController : MonoBehaviour
         }
         else{
             Time.timeScale = 1f;
-            //lvlLdr.fade(loadData.lastBuildIndex);
+            lvlLdr.fade(loadData.lastBuildIndex);
             pauseMenu.Resume();
         }
-        Vector3 position;
-        position.x = loadData.lastCheckpoint[0];
-        position.y = loadData.lastCheckpoint[1];
-        position.z = loadData.lastCheckpoint[2];
-
-        transform.position = position;
     }
     /////////////////////////////////
 
@@ -196,6 +191,35 @@ public class PlayerController : MonoBehaviour
     private float BashTimeReset;
     ////////////////////////////////////////
 
+    //FOR CHECKPOINTS////////////////////////////
+    GameObject [] checkpoints;
+
+    public void skipObjective()
+    {
+        if(checkpoints != null)
+        {
+            foreach(GameObject checkpoint in checkpoints)
+            {
+                if(transform.position.x < checkpoint.transform.position.x)
+                {
+                    Time.timeScale = 1f;
+
+                    Vector3 newPos;
+                    newPos.x = checkpoint.transform.position.x;
+                    newPos.y = checkpoint.transform.position.y;
+                    newPos.z = transform.position.z;
+
+                    transform.position = newPos;
+
+                    pauseMenu.Resume();
+
+                    return;
+                }
+            }
+        }
+    }
+    ///////////////////////////////////////////
+
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
@@ -207,6 +231,27 @@ public class PlayerController : MonoBehaviour
         BashTimeReset=BashTime;
         scene=SceneManager.GetActiveScene();
         //Debug.Log(scene.name);
+
+        //If scene was Loaded
+        if(SaveSystem.GetLoadFlag() == true)
+        {
+            PlayerData loadData = SaveSystem.LoadPlayer();
+
+            Vector3 position;
+            position.x = loadData.lastCheckpoint[0];
+            position.y = loadData.lastCheckpoint[1];
+            position.z = loadData.lastCheckpoint[2];
+
+            rb.transform.position = position;
+
+            SaveSystem.SetLoadFlag(false);
+        }
+
+        //Checkpoints
+        if(checkpoints == null)
+        {
+            checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+        }
     }
 
     void Update()

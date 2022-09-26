@@ -9,7 +9,6 @@ public class LevelLoader : MonoBehaviour
     public Animator crossFadeObj;
     int buildIndex = -1;
     string gameSceneName = "GameScene";
-    //public Slider progressBar;
 
     public void fadeToLevel(string sceneName)
     {
@@ -18,11 +17,6 @@ public class LevelLoader : MonoBehaviour
 
         if(crossFadeObj.gameObject.activeSelf && crossFadeObj.isActiveAndEnabled)
         {
-            crossFadeObj.SetTrigger("StartCrossFade");
-        }
-        else{
-            Debug.Log("This is the animator state in LevelLoader: " + crossFadeObj.gameObject.activeSelf);
-            gameObject.SetActive(true);
             crossFadeObj.SetTrigger("StartCrossFade");
         }
     }
@@ -34,11 +28,6 @@ public class LevelLoader : MonoBehaviour
 
         if(crossFadeObj.gameObject.activeSelf && crossFadeObj.isActiveAndEnabled)
         {
-            crossFadeObj.SetTrigger("StartCrossFade");
-        }
-        else{
-            Debug.Log("This is the animator state in LevelLoader: " + crossFadeObj.gameObject.activeSelf);
-            gameObject.SetActive(true);
             crossFadeObj.SetTrigger("StartCrossFade");
         }
     }
