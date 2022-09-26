@@ -21,18 +21,6 @@ public class PauseMenuController : MonoBehaviour
 
     void Start()
     {
-        currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
-        //Debug.Log(sceneName);
-
-        if (sceneName != "GameScene")//load skip button only for tutorial
-        {
-            SkipTutorialBtn.SetActive(false);
-        }
-        else{
-            SkipBtn.SetActive(true);
-        }
-
         string path = Application.persistentDataPath + "/player.data";
 
         if(File.Exists(path))
@@ -82,11 +70,7 @@ public class PauseMenuController : MonoBehaviour
         {
             levelLoadr.fadeToLevel("MenuScene");
         }
-        else{
-            Debug.Log("This is the animator state in PauseMenuController: " + gameObject.activeSelf);
-        }
 
-        //SceneManager.LoadScene("MenuScene");
         if(isPaused)
         {
             Time.timeScale = 1f;
@@ -94,17 +78,13 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    public void SkipTutorial()
+    public void SkipLevel()
     {
         if(gameObject.activeSelf)
         {
-            levelLoadr.fadeToLevel("GameScene 1");
-        }
-        else{
-            Debug.Log("This is the animator state in PauseMenuController: " + gameObject.activeSelf);
+            levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex + 1);
         }
 
-        //SceneManager.LoadScene("GameScene 1");
         if(isPaused)
         {
             Time.timeScale = 1f;
