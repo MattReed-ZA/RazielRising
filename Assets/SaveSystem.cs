@@ -4,8 +4,20 @@ using UnityEngine;
 
 public static class SaveSystem
 {
-   public static bool SavePlayer(PlayerController player)
-   {
+    static bool loadFlag;
+
+    public static bool GetLoadFlag()
+    {
+        return loadFlag;
+    }
+
+    public static void SetLoadFlag(bool flag)
+    {
+        loadFlag = flag;
+    }
+
+    public static bool SavePlayer(PlayerController player)
+    {
         BinaryFormatter formatter = new BinaryFormatter();
 
         string path = Application.persistentDataPath + "/player.data";
@@ -24,10 +36,10 @@ public static class SaveSystem
         else{
             return false;
         }
-   }
+    }
 
-   public static PlayerData LoadPlayer()
-   {
+    public static PlayerData LoadPlayer()
+    {
         string path = Application.persistentDataPath + "/player.data";
 
         if(File.Exists(path))
@@ -46,5 +58,5 @@ public static class SaveSystem
             Debug.Log("Save File Not Found in path: " + path);
             return null;
         }
-   }
+    }
 }

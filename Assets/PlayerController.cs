@@ -144,8 +144,9 @@ public class PlayerController : MonoBehaviour
 
     public void loadGame()
     {
+        SaveSystem.SetLoadFlag(true);
         PlayerData loadData = SaveSystem.LoadPlayer();
-        Debug.Log(loadData);
+        
         if(loadData.lastBuildIndex != SceneManager.GetActiveScene().buildIndex)
         {
             Time.timeScale = 1f;
@@ -154,15 +155,9 @@ public class PlayerController : MonoBehaviour
         }
         else{
             Time.timeScale = 1f;
-            //lvlLdr.fade(loadData.lastBuildIndex);
+            lvlLdr.fade(loadData.lastBuildIndex);
             pauseMenu.Resume();
         }
-        Vector3 position;
-        position.x = loadData.lastCheckpoint[0];
-        position.y = loadData.lastCheckpoint[1];
-        position.z = loadData.lastCheckpoint[2];
-
-        transform.position = position;
     }
     /////////////////////////////////
 
@@ -207,6 +202,21 @@ public class PlayerController : MonoBehaviour
         BashTimeReset=BashTime;
         scene=SceneManager.GetActiveScene();
         //Debug.Log(scene.name);
+
+        //If scene was Loaded
+        if(SaveSystem.GetLoadFlag() == true)
+        {
+            PlayerData loadData = SaveSystem.LoadPlayer();
+
+            Vector3 position;
+            position.x = loadData.lastCheckpoint[0];
+            position.y = loadData.lastCheckpoint[1];
+            position.z = loadData.lastCheckpoint[2];
+
+            rb.transform.position = position;
+
+            SaveSystem.SetLoadFlag(false);
+        }
     }
 
     void Update()
