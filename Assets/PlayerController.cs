@@ -191,6 +191,35 @@ public class PlayerController : MonoBehaviour
     private float BashTimeReset;
     ////////////////////////////////////////
 
+    //FOR CHECKPOINTS////////////////////////////
+    GameObject [] checkpoints;
+
+    public void skipObjective()
+    {
+        if(checkpoints != null)
+        {
+            foreach(GameObject checkpoint in checkpoints)
+            {
+                if(transform.position.x < checkpoint.transform.position.x)
+                {
+                    Time.timeScale = 1f;
+
+                    Vector3 newPos;
+                    newPos.x = checkpoint.transform.position.x;
+                    newPos.y = checkpoint.transform.position.y;
+                    newPos.z = transform.position.z;
+
+                    transform.position = newPos;
+
+                    pauseMenu.Resume();
+
+                    return;
+                }
+            }
+        }
+    }
+    ///////////////////////////////////////////
+
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
@@ -216,6 +245,12 @@ public class PlayerController : MonoBehaviour
             rb.transform.position = position;
 
             SaveSystem.SetLoadFlag(false);
+        }
+
+        //Checkpoints
+        if(checkpoints == null)
+        {
+            checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
         }
     }
 
