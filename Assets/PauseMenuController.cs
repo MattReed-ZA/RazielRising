@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -9,22 +10,26 @@ public class PauseMenuController : MonoBehaviour
 
     public GameObject pauseMenuUI;
 
+    public PlayerController player;
+
     public static Scene currentScene;
-    [SerializeField] GameObject btn;
+    [SerializeField] GameObject SkipTutorialBtn;
+    [SerializeField] GameObject SkipBtn;
+    [SerializeField] GameObject LoadBtn;
 
     public LevelLoader levelLoadr;    
 
     void Start()
     {
-        currentScene = SceneManager.GetActiveScene();
-        string sceneName = currentScene.name;
-        //Debug.Log(sceneName);
+        string path = Application.persistentDataPath + "/player.data";
 
-        if (sceneName != "GameScene")//load skip button only for tutorial
+        if(File.Exists(path))
         {
-            btn.SetActive(false);
+            LoadBtn.SetActive(true);
         }
-
+        else{
+            LoadBtn.SetActive(false);
+        }
 
     }
 
@@ -61,8 +66,11 @@ public class PauseMenuController : MonoBehaviour
 
     public void Quit()
     {
-        //levelLoadr.LoadNextLevel("MenuScene");
-        SceneManager.LoadScene("MenuScene");
+        if(gameObject.activeSelf)
+        {
+            levelLoadr.fadeToLevel("MenuScene");
+        }
+
         if(isPaused)
         {
             Time.timeScale = 1f;
@@ -70,10 +78,13 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    public void Skip()
+    public void SkipLevel()
     {
-        //levelLoadr.LoadNextLevel("GameScene 1");
-        SceneManager.LoadScene("GameScene 1");
+        if(gameObject.activeSelf)
+        {
+            levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+
         if(isPaused)
         {
             Time.timeScale = 1f;

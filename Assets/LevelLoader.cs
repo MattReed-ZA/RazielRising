@@ -7,9 +7,53 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     public Animator crossFadeObj;
-    //public Slider progressBar;
+    int buildIndex = -1;
+    string gameSceneName = "GameScene";
 
-    public void LoadNextLevel()
+    public void fadeToLevel(string sceneName)
+    {
+        gameSceneName = sceneName;
+        buildIndex = -1;
+
+        if(crossFadeObj.gameObject.activeSelf && crossFadeObj.isActiveAndEnabled)
+        {
+            crossFadeObj.SetTrigger("StartCrossFade");
+        }
+    }
+
+    public void fadeToNextLevel(int index)
+    {
+        buildIndex = index;
+        gameSceneName = "";
+
+        if(crossFadeObj.gameObject.activeSelf && crossFadeObj.isActiveAndEnabled)
+        {
+            crossFadeObj.SetTrigger("StartCrossFade");
+        }
+    }
+
+    public void fade(int index)
+    {
+        buildIndex = index;
+        gameSceneName = "";
+        crossFadeObj.SetTrigger("StartCrossFade");
+    }
+
+    public void onFadeComplete()
+    {
+        if(buildIndex != -1)
+        {
+            SceneManager.LoadScene(buildIndex);
+        }
+
+        if(gameSceneName != "")
+        {
+            SceneManager.LoadScene(gameSceneName);
+        }
+    }
+
+
+    /* public void LoadNextLevel()
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex+1));
     }
@@ -22,7 +66,7 @@ public class LevelLoader : MonoBehaviour
     }
 
     //Code To Be Used Later in Life
-    /* IEnumerator LoadAsyncronously(int i)
+    IEnumerator LoadAsyncronously(int i)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(i);
 

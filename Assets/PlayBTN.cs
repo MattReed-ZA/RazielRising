@@ -9,7 +9,7 @@ public class PlayBTN : MonoBehaviour
 
     public void PlayGame()
     {
-        levelLoadr.LoadNextLevel(); 
+        levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void QuitGame()

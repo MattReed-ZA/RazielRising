@@ -23,7 +23,7 @@ public class LevelControl : MonoBehaviour
     {
         if(other.tag=="Player")
         {
-            levelLoadr.LoadNextLevel();            
+            levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex + 1);            
         }
         else
         {
