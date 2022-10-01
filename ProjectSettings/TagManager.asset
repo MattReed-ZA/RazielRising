@@ -7,6 +7,8 @@ TagManager:
   - Checkpoint
   - Draggable
   - Bashable
+  - Target
+  - Shooter
   layers:
   - Default
   - TransparentFX
