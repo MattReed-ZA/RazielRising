@@ -192,15 +192,49 @@ public class PlayerController : MonoBehaviour
     private float BashTimeReset;
     ////////////////////////////////////////
 
-    //FOR CHECKPOINTS////////////////////////////
+    //FOR CHECKPOINT Skipping////////////////////////////
     GameObject [] checkpoints;
+    [SerializeField] private GameObject skipObjectiveButton;
+
+    void swap(GameObject i, GameObject j)
+    {
+        GameObject temp = i;
+        i = j;
+        j = temp;
+    }
+
+    void checkpointSort()
+    {
+        for(int i = 0; i <= checkpoints.Length; i++)
+        {
+            for(int j = i+1; j <= checkpoints.Length; j++)
+            {
+                if(checkpoints[i].transform.position.x > checkpoints[j].transform.position.x)
+                {
+                    Debug.Log("Swapping " + checkpoints[i].name + " with " + checkpoints[j].name);
+                    swap(checkpoints[i], checkpoints[j]);
+                }
+            }
+        }
+    }
 
     public void skipObjective()
     {
+        int cpIndex = 0;
+
         if(checkpoints != null)
         {
+            //checkpointSort();
+
             foreach(GameObject checkpoint in checkpoints)
             {
+                cpIndex++;
+
+                if(cpIndex == checkpoints.Length)
+                {
+                    skipObjectiveButton.SetActive(false);
+                }
+
                 if(transform.position.x < checkpoint.transform.position.x)
                 {
                     Time.timeScale = 1f;
@@ -213,7 +247,7 @@ public class PlayerController : MonoBehaviour
                     transform.position = newPos;
 
                     pauseMenu.Resume();
-
+                    //Debug.Log("The current checkpoint is: " + checkpoint.name);
                     return;
                 }
             }
