@@ -7,6 +7,8 @@ TagManager:
   - Checkpoint
   - Draggable
   - Bashable
+  - Target
+  - Shooter
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - UI
   - Ground
   - Background Images
-  - Decorations
-  - 
+  - Decorations Behind
+  - Decorations Infront
   - 
   - 
   - 
