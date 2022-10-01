@@ -91,4 +91,18 @@ public class PauseMenuController : MonoBehaviour
             isPaused = false;
         }
     }
+
+    public void Restart()
+    {
+        if(gameObject.activeSelf)
+        {
+            levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if(isPaused)
+        {
+            Time.timeScale = 1f;
+            isPaused = false;
+        }
+    }
 }
