@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour
     //FOR RESPAWNING///////////////////
     public Vector3 respawnPoint;
     public GameObject respawnDetector;
+    private Vector3 currentCP;
     ///////////////////////////////////
 
     //FOR SAVING & LOADING//////////////
@@ -280,6 +281,8 @@ public class PlayerController : MonoBehaviour
             canNormalJump=false;
             canWallJump=false;
         }
+
+        
         
     }
 
@@ -302,6 +305,7 @@ public class PlayerController : MonoBehaviour
         {
             respawnPoint=rb.position;
             FindObjectOfType<AudioManager>().Play("Checkpoint");
+            
         }
         else if(collision.tag == "Draggable")
         {
@@ -1046,6 +1050,11 @@ public class PlayerController : MonoBehaviour
             isWallSliding=false;
         }
     }
+
+    
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
                            
