@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public static Scene scene;
 
     [SerializeField] private TrailRenderer tr;
-    
+
     private Animator anim;
     private bool isWalking;
 
@@ -21,10 +21,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
 
     public float movementSpeed = 10f;
-    public float jumpForce=16.0f;
-    
+    public float jumpForce = 16.0f;
+
     private bool isFacingRight = true;
-    private bool isGrounded=true;
+    private bool isGrounded = true;
     private bool isTouchingWall;
     private bool canNormalJump;
     private bool canWallJump;
@@ -35,13 +35,13 @@ public class PlayerController : MonoBehaviour
     private bool canFlip;
     private bool hasWallJumped;
     private bool isTouchingLedge;
-    private bool canClimbLedge=false;
+    private bool canClimbLedge = false;
     private bool ledgeDetected;
 
-    public int amountOfJumps=2;
+    public int amountOfJumps = 2;
 
-    private int amountOfJumpsleft; 
-    private int facingDirection=1;
+    private int amountOfJumpsleft;
+    private int facingDirection = 1;
     private int lastWallJumpDirection;
 
     public Transform groundCheck;
@@ -49,22 +49,22 @@ public class PlayerController : MonoBehaviour
     public Transform ledgeCheck;
 
     public LayerMask whatIsGround;
-    
+
     public float groundCheckRadius;
     public float wallCheckDistance;
     public float wallSlideSpeed;
     public float movementForceInAir;
-    public float airDragMultiplier=0.95f;
-    public float varJumpHeightMultiplier=0.5f;
+    public float airDragMultiplier = 0.95f;
+    public float varJumpHeightMultiplier = 0.5f;
     public float wallHopForce;
     public float wallJumpForce;
-    public float jumpTimerSet=0.15f;
-    public float turnTimerSet=0.1f;
-    public float wallJumpTimerSet=0.5f;
-    public float ledgeClimbXOff1=0f;
-    public float ledgeClimbYOff1=0f;
-    public float ledgeClimbXOff2=0f;
-    public float ledgeClimbYOff2=0f;
+    public float jumpTimerSet = 0.15f;
+    public float turnTimerSet = 0.1f;
+    public float wallJumpTimerSet = 0.5f;
+    public float ledgeClimbXOff1 = 0f;
+    public float ledgeClimbYOff1 = 0f;
+    public float ledgeClimbXOff2 = 0f;
+    public float ledgeClimbYOff2 = 0f;
 
     private Vector2 ledgePosBottom;
     private Vector2 ledgePos1;
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed;
     public float dashCooldown;
     private float dashTimeLeft;
-    private float lastDash=-100;
+    private float lastDash = -100;
 
     public float distanceBetweenImages;
     private float lastImageXpos;
@@ -101,13 +101,15 @@ public class PlayerController : MonoBehaviour
     {
         bashObjRelease.Play();
     }
-   
+
     ///////////////////////////////////
 
     //FOR RESPAWNING///////////////////
     public Vector3 respawnPoint;
     public GameObject respawnDetector;
-    private Vector3 currentCP;
+
+    //death screen
+    public GameOverScreen _GameOverScreen;
     ///////////////////////////////////
 
     //FOR SAVING & LOADING//////////////
@@ -117,13 +119,15 @@ public class PlayerController : MonoBehaviour
     bool isSavedTextActive = false;
     float timer = 0.1f;
 
+
+
     void checkGameSavedText()
     {
-        if(isSavedTextActive)
+        if (isSavedTextActive)
         {
             timer -= Time.deltaTime;
             //Debug.Log("The timer is: " + timer);
-            if(timer <= 0)
+            if (timer <= 0)
             {
                 isSavedTextActive = false;
                 GameSavedText.SetActive(false);
@@ -136,7 +140,7 @@ public class PlayerController : MonoBehaviour
     {
         bool isSaved = SaveSystem.SavePlayer(this);
 
-        if(isSaved)
+        if (isSaved)
         {
             GameSavedText.SetActive(true);
             isSavedTextActive = true;
@@ -147,14 +151,15 @@ public class PlayerController : MonoBehaviour
     {
         SaveSystem.SetLoadFlag(true);
         PlayerData loadData = SaveSystem.LoadPlayer();
-        
-        if(loadData.lastBuildIndex != SceneManager.GetActiveScene().buildIndex)
+
+        if (loadData.lastBuildIndex != SceneManager.GetActiveScene().buildIndex)
         {
             Time.timeScale = 1f;
             lvlLdr.fadeToNextLevel(loadData.lastBuildIndex);
             pauseMenu.Resume();
         }
-        else{
+        else
+        {
             Time.timeScale = 1f;
             lvlLdr.fade(loadData.lastBuildIndex);
             pauseMenu.Resume();
@@ -192,50 +197,16 @@ public class PlayerController : MonoBehaviour
     private float BashTimeReset;
     ////////////////////////////////////////
 
-    //FOR CHECKPOINT Skipping////////////////////////////
-    GameObject [] checkpoints;
-    [SerializeField] private GameObject skipObjectiveButton;
-
-    void swap(GameObject i, GameObject j)
-    {
-        GameObject temp = i;
-        i = j;
-        j = temp;
-    }
-
-    void checkpointSort()
-    {
-        for(int i = 0; i <= checkpoints.Length; i++)
-        {
-            for(int j = i+1; j <= checkpoints.Length; j++)
-            {
-                if(checkpoints[i].transform.position.x > checkpoints[j].transform.position.x)
-                {
-                    Debug.Log("Swapping " + checkpoints[i].name + " with " + checkpoints[j].name);
-                    swap(checkpoints[i], checkpoints[j]);
-                }
-            }
-        }
-    }
+    //FOR CHECKPOINTS////////////////////////////
+    GameObject[] checkpoints;
 
     public void skipObjective()
     {
-        int cpIndex = 0;
-
-        if(checkpoints != null)
+        if (checkpoints != null)
         {
-            //checkpointSort();
-
-            foreach(GameObject checkpoint in checkpoints)
+            foreach (GameObject checkpoint in checkpoints)
             {
-                cpIndex++;
-
-                if(cpIndex == checkpoints.Length)
-                {
-                    skipObjectiveButton.SetActive(false);
-                }
-
-                if(transform.position.x < checkpoint.transform.position.x)
+                if (transform.position.x < checkpoint.transform.position.x)
                 {
                     Time.timeScale = 1f;
 
@@ -247,7 +218,7 @@ public class PlayerController : MonoBehaviour
                     transform.position = newPos;
 
                     pauseMenu.Resume();
-                    //Debug.Log("The current checkpoint is: " + checkpoint.name);
+
                     return;
                 }
             }
@@ -257,18 +228,18 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        rb=GetComponent<Rigidbody2D>();
-        amountOfJumpsleft=amountOfJumps;
+        rb = GetComponent<Rigidbody2D>();
+        amountOfJumpsleft = amountOfJumps;
         wallHopDirection.Normalize();
         wallJumpDirection.Normalize();
-        anim=GetComponent<Animator>();
-        respawnPoint=rb.position;
-        BashTimeReset=BashTime;
-        scene=SceneManager.GetActiveScene();
+        anim = GetComponent<Animator>();
+        respawnPoint = rb.position;
+        BashTimeReset = BashTime;
+        scene = SceneManager.GetActiveScene();
         //Debug.Log(scene.name);
 
         //If scene was Loaded
-        if(SaveSystem.GetLoadFlag() == true)
+        if (SaveSystem.GetLoadFlag() == true)
         {
             PlayerData loadData = SaveSystem.LoadPlayer();
 
@@ -283,7 +254,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Checkpoints
-        if(checkpoints == null)
+        if (checkpoints == null)
         {
             checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
         }
@@ -307,41 +278,39 @@ public class PlayerController : MonoBehaviour
         BugFixes();
 
         //TO MOVE RESPAWN POINT///
-        respawnDetector.transform.position = new Vector2(rb.position.x,respawnDetector.transform.position.y);
+        respawnDetector.transform.position = new Vector2(rb.position.x, respawnDetector.transform.position.y);
         //////////////////////////
 
-        if(dragging)
+        if (dragging)
         {
-            canNormalJump=false;
-            canWallJump=false;
+            canNormalJump = false;
+            canWallJump = false;
         }
 
-        
-        
     }
 
     //FOR CHECKPOINTS/////////////////////////////////////////
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag=="Respawn")
+        if (collision.tag == "Respawn")
         {
             FindObjectOfType<AudioManager>().Play("Dead");
-            rb.position=respawnPoint;
-            dragging=false;
-            isPushing=false;
-            isPulling=false;
-            dragging=false;
-            isPushing=false;
-            isPulling=false;
-            isBashing=false;
+            rb.position = respawnPoint;
+            dragging = false;
+            isPushing = false;
+            isPulling = false;
+            dragging = false;
+            isPushing = false;
+            isPulling = false;
+            isBashing = false;
+            _GameOverScreen.setUp();
         }
-        else if(collision.tag=="Checkpoint")
+        else if (collision.tag == "Checkpoint")
         {
-            respawnPoint=rb.position;
+            respawnPoint = rb.position;
             FindObjectOfType<AudioManager>().Play("Checkpoint");
-            
         }
-        else if(collision.tag == "Draggable")
+        else if (collision.tag == "Draggable")
         {
             canDrag = true;
         }
@@ -349,7 +318,7 @@ public class PlayerController : MonoBehaviour
 
     private void onTriggerExit2D(Collider2D collision)
     {
-        if(collision.tag == "Draggable")
+        if (collision.tag == "Draggable")
         {
             canDrag = false;
         }
@@ -358,30 +327,30 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimations()
     {
-        anim.SetBool("isWalking",isWalking);
-        anim.SetBool("isGrounded",isGrounded);      
-        anim.SetFloat("yVelocity",rb.velocity.y);
-        anim.SetBool("isWallSliding",isWallSliding);
-        anim.SetBool("isDashing",isDashing);
+        anim.SetBool("isWalking", isWalking);
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetFloat("yVelocity", rb.velocity.y);
+        anim.SetBool("isWallSliding", isWallSliding);
+        anim.SetBool("isDashing", isDashing);
         anim.SetBool("isPulling", isPulling);
         anim.SetBool("isPushing", isPushing);
     }
 
     private void CheckIfWallSliding()
     {
-        if(isTouchingWall && movementInputDirection==facingDirection  && rb.velocity.y<0 )
+        if (isTouchingWall && movementInputDirection == facingDirection && rb.velocity.y < 0)
         {
-            isWallSliding=true;
+            isWallSliding = true;
         }
         else
         {
-            isWallSliding=false;
+            isWallSliding = false;
         }
     }
 
     private void FixedUpdate()
     {
-        if(isBashing==false)
+        if (isBashing == false)
         {
             ApplyMovement();
             CheckSurroundings();
@@ -390,11 +359,11 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMovementDirection()
     {
-        if(isFacingRight && movementInputDirection<0)
+        if (isFacingRight && movementInputDirection < 0)
         {
             Flip();
         }
-        else if(!isFacingRight && movementInputDirection>0)
+        else if (!isFacingRight && movementInputDirection > 0)
         {
             Flip();
         }
@@ -402,21 +371,21 @@ public class PlayerController : MonoBehaviour
 
     private void Flip()
     {
-        if(!isWallSliding && !dragging && canFlip && !PauseMenuController.isPaused)
+        if (!isWallSliding && !dragging && canFlip && !PauseMenuController.isPaused)
         {
-            facingDirection*=-1;
-            isFacingRight=!isFacingRight;
-            transform.Rotate(0.0f,180.0f,0.0f);
+            facingDirection *= -1;
+            isFacingRight = !isFacingRight;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
         }
     }
-   
+
 
     private void CheckInput()
     {
         //Dragging Mechanic################################################################################################################################
-        if(canDrag == true && dragObject != null && Input.GetButtonDown("Drag"))
+        if (canDrag == true && dragObject != null && Input.GetButtonDown("Drag"))
         {
-            if(dragging == false)
+            if (dragging == false)
             {
                 dragging = true;
 
@@ -425,15 +394,15 @@ public class PlayerController : MonoBehaviour
 
                 //dragObject.constraints = RigidbodyConstraints2D.FreezePositionY;
                 //rb.constraints=RigidbodyConstraints2D.FreezePositionY;
-                rb.constraints=RigidbodyConstraints2D.FreezeRotation;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
                 //dragObject.constraints = RigidbodyConstraints2D.FreezePositionY;
                 //rb.constraints=RigidbodyConstraints2D.FreezePositionY;
-                rb.constraints=RigidbodyConstraints2D.FreezeRotation;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
                 isWalking = false;
             }
-            else if(dragging == true)
+            else if (dragging == true)
             {
                 dragging = false;
 
@@ -448,259 +417,259 @@ public class PlayerController : MonoBehaviour
         //Dragging Mechanic################################################################################################################################
 
 
-        movementInputDirection=Input.GetAxisRaw("Horizontal");
-        
-        if(Input.GetButtonDown("Jump"))
+        movementInputDirection = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump"))
         {
-            if(isGrounded || (amountOfJumpsleft>0 && !isTouchingWall))
+            if (isGrounded || (amountOfJumpsleft > 0 && !isTouchingWall))
             {
                 NormalJump();
-                StartDJTimer=true;
+                StartDJTimer = true;
                 //Debug.Log("JUMP");
             }
             else
             {
-                jumpTimer=jumpTimerSet;
-                isAttemptingToJump=true;
+                jumpTimer = jumpTimerSet;
+                isAttemptingToJump = true;
             }
         }
 
-        if(Input.GetButtonDown("Horizontal") && isTouchingWall)
+        if (Input.GetButtonDown("Horizontal") && isTouchingWall)
         {
-            if(!isGrounded && movementInputDirection != facingDirection)
+            if (!isGrounded && movementInputDirection != facingDirection)
             {
-                canMove=false;
-                canFlip=false;
+                canMove = false;
+                canFlip = false;
 
-                turnTimer=turnTimerSet;
+                turnTimer = turnTimerSet;
             }
         }
 
-        if(turnTimer>=0)
+        if (turnTimer >= 0)
         {
-            turnTimer-= Time.deltaTime;
+            turnTimer -= Time.deltaTime;
 
-            if(turnTimer<=0)
+            if (turnTimer <= 0)
             {
-                canMove=true;
-                canFlip=true;
+                canMove = true;
+                canFlip = true;
             }
         }
 
-        if(checkJumpMultiplier && !Input.GetButton("Jump"))
+        if (checkJumpMultiplier && !Input.GetButton("Jump"))
         {
-            checkJumpMultiplier=false;
-            rb.velocity= new Vector2(rb.velocity.x,rb.velocity.y * varJumpHeightMultiplier);
+            checkJumpMultiplier = false;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * varJumpHeightMultiplier);
         }
 
-        if(Input.GetButtonDown("Dash"))
+        if (Input.GetButtonDown("Dash"))
         {
-            if(Time.time >= (lastDash+dashCooldown))
+            if (Time.time >= (lastDash + dashCooldown))
             {
-                tr.emitting=true;
+                tr.emitting = true;
                 Dash();
                 FindObjectOfType<AudioManager>().Play("Dash");
-                
+
             }
-            
+
         }
     }
 
     private void Dash()
     {
-        isDashing=true;
-        dashTimeLeft=dashTime;
-        lastDash=Time.time;
+        isDashing = true;
+        dashTimeLeft = dashTime;
+        lastDash = Time.time;
     }
 
     private void CheckDash()
     {
-        if(isDashing)
-        {  
-            if(dashTimeLeft>0)
-            {  
-                canMove=false;
-                canFlip=false;
-                rb.velocity=new Vector2(dashSpeed*facingDirection,0);
+        if (isDashing)
+        {
+            if (dashTimeLeft > 0)
+            {
+                canMove = false;
+                canFlip = false;
+                rb.velocity = new Vector2(dashSpeed * facingDirection, 0);
                 dashTimeLeft -= Time.deltaTime;
             }
 
-            if(dashTimeLeft<=0 || isTouchingWall)
+            if (dashTimeLeft <= 0 || isTouchingWall)
             {
-                isDashing=false;
-                tr.emitting=false;
-                canFlip=true;
-                canMove=true;
+                isDashing = false;
+                tr.emitting = false;
+                canFlip = true;
+                canMove = true;
             }
-            
+
         }
     }
 
     public void CheckJump()
     {
-        if(jumpTimer>0)
+        if (jumpTimer > 0)
         {
             //Wall Jump
-            if(!isGrounded && isTouchingWall && movementInputDirection!=0 && movementInputDirection != facingDirection)
+            if (!isGrounded && isTouchingWall && movementInputDirection != 0 && movementInputDirection != facingDirection)
             {
                 WallJump();
                 //Debug.Log("WALL JUMP");
                 //Debug.Log("WALL JUMP");
             }
-            else if(isGrounded || amountOfJumpsleft!=0)
+            else if (isGrounded || amountOfJumpsleft != 0)
             {
                 NormalJump();
             }
         }
 
-        if(isAttemptingToJump)
+        if (isAttemptingToJump)
         {
             jumpTimer -= Time.deltaTime;
         }
 
-        if(wallJumpTimer>0)
+        if (wallJumpTimer > 0)
         {
-            if(hasWallJumped && movementInputDirection == -lastWallJumpDirection)
+            if (hasWallJumped && movementInputDirection == -lastWallJumpDirection)
             {
-                rb.velocity=new Vector2(rb.velocity.x,0);
-                hasWallJumped=false;
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+                hasWallJumped = false;
             }
-            else if(wallJumpTimer <= 0)
+            else if (wallJumpTimer <= 0)
             {
-                hasWallJumped=false;
+                hasWallJumped = false;
             }
             else
             {
-                wallJumpTimer-=Time.deltaTime;
+                wallJumpTimer -= Time.deltaTime;
             }
         }
     }
 
     private void NormalJump()
     {
-        if(canNormalJump && (!isPulling||!isPushing) && (!isPulling||!isPushing))
+        if (canNormalJump && (!isPulling || !isPushing) && (!isPulling || !isPushing))
         {
             CreateDust();
-            if(amountOfJumpsleft==2)
+            if (amountOfJumpsleft == 2)
             {
                 FindObjectOfType<AudioManager>().Play("Jump");
             }
-            if(amountOfJumpsleft==1)
+            if (amountOfJumpsleft == 1)
             {
                 FindObjectOfType<AudioManager>().Play("Jump2");
             }
-            
-            rb.velocity=new Vector2(rb.velocity.x, jumpForce);
+
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             amountOfJumpsleft--;
-            jumpTimer=0;
-            isAttemptingToJump=false;
-            checkJumpMultiplier=true;
+            jumpTimer = 0;
+            isAttemptingToJump = false;
+            checkJumpMultiplier = true;
         }
     }
 
     private void WallJump()
     {
-        if(canWallJump)
+        if (canWallJump)
         {
-            rb.velocity=new Vector2(rb.velocity.x,0.0f);
+            rb.velocity = new Vector2(rb.velocity.x, 0.0f);
             FindObjectOfType<AudioManager>().Play("Jump");
 
-            
-            isWallSliding=false;
-            amountOfJumpsleft=1;//FIXES INFINITE WALL JUMP EXPLOIT
+
+            isWallSliding = false;
+            amountOfJumpsleft = 1;//FIXES INFINITE WALL JUMP EXPLOIT
             amountOfJumpsleft--;
-            Vector2 forceToAdd=new Vector2(wallJumpForce*wallJumpDirection.x*movementInputDirection,wallJumpForce*wallJumpDirection.y);
-            rb.AddForce(forceToAdd,ForceMode2D.Impulse);
-            jumpTimer=0;
-            isAttemptingToJump=false;
-            checkJumpMultiplier=true;
-            turnTimer=0;
-            canMove=true;
-            canFlip=true;
-            hasWallJumped=true;
-            wallJumpTimer=wallJumpTimerSet;
-            lastWallJumpDirection=-facingDirection;
+            Vector2 forceToAdd = new Vector2(wallJumpForce * wallJumpDirection.x * movementInputDirection, wallJumpForce * wallJumpDirection.y);
+            rb.AddForce(forceToAdd, ForceMode2D.Impulse);
+            jumpTimer = 0;
+            isAttemptingToJump = false;
+            checkJumpMultiplier = true;
+            turnTimer = 0;
+            canMove = true;
+            canFlip = true;
+            hasWallJumped = true;
+            wallJumpTimer = wallJumpTimerSet;
+            lastWallJumpDirection = -facingDirection;
         }
     }
 
     private void CheckIfCanJump()
     {
-        if((isGrounded && rb.velocity.y<=0.01f))
+        if ((isGrounded && rb.velocity.y <= 0.01f))
         {
-            amountOfJumpsleft=amountOfJumps;
+            amountOfJumpsleft = amountOfJumps;
         }
 
-        if(isTouchingWall)
+        if (isTouchingWall)
         {
-            canWallJump=true;
+            canWallJump = true;
         }
 
-        if(amountOfJumpsleft<=0)
+        if (amountOfJumpsleft <= 0)
         {
-            canNormalJump=false;
+            canNormalJump = false;
         }
         else
         {
-            canNormalJump=true;
+            canNormalJump = true;
         }
     }
 
     private void ApplyMovement()
     {
-        if(!isGrounded && !isWallSliding && movementInputDirection==0)
+        if (!isGrounded && !isWallSliding && movementInputDirection == 0)
         {
-            rb.velocity=new Vector2(rb.velocity.x * airDragMultiplier,rb.velocity.y);
+            rb.velocity = new Vector2(rb.velocity.x * airDragMultiplier, rb.velocity.y);
         }
-        else if(canMove)
-        {  
+        else if (canMove)
+        {
             //Debug.Log("In the Apply Movement Method, dragging is: " + dragging);
-            if(dragging == true && dragObject != null)
+            if (dragging == true && dragObject != null)
             {
-                if((isFacingRight && rb.velocity.x>0.5) || (!isFacingRight && rb.velocity.x<0.5))
+                if ((isFacingRight && rb.velocity.x > 0.5) || (!isFacingRight && rb.velocity.x < 0.5))
                 {
                     //Pushing
                     isPulling = false;
-                    isPushing = true;                   
+                    isPushing = true;
                 }
-                else if((isFacingRight && rb.velocity.x<0.5) || (!isFacingRight && rb.velocity.x>0.5))
+                else if ((isFacingRight && rb.velocity.x < 0.5) || (!isFacingRight && rb.velocity.x > 0.5))
                 {
                     //Pulling
                     isPushing = false;
                     isPulling = true;
                 }
 
-                rb.velocity = new Vector2(dragSpeed*movementInputDirection, rb.velocity.y);
-                dragObject.velocity = new Vector2(dragSpeed*movementInputDirection, rb.velocity.y);
+                rb.velocity = new Vector2(dragSpeed * movementInputDirection, rb.velocity.y);
+                dragObject.velocity = new Vector2(dragSpeed * movementInputDirection, rb.velocity.y);
             }
             else
             {
-                if(rb.velocity.x>=0.5 || rb.velocity.x<=-0.5)
+                if (rb.velocity.x >= 0.5 || rb.velocity.x <= -0.5)
                 {
-                    isWalking=true;
+                    isWalking = true;
                 }
                 else
                 {
-                    isWalking=false;
+                    isWalking = false;
                 }
 
-                rb.velocity=new Vector2(movementSpeed*movementInputDirection, rb.velocity.y);
-            }      
+                rb.velocity = new Vector2(movementSpeed * movementInputDirection, rb.velocity.y);
+            }
         }
-       
-        
-        
-        if(isWallSliding)
+
+
+
+        if (isWallSliding)
         {
-            if(rb.velocity.y < -wallSlideSpeed)
+            if (rb.velocity.y < -wallSlideSpeed)
             {
-                rb.velocity=new Vector2(rb.velocity.x,-wallSlideSpeed);
+                rb.velocity = new Vector2(rb.velocity.x, -wallSlideSpeed);
             }
         }
     }
 
     private void CheckLedgeClimb()
     {
-       
+
     }
 
     public void FinishLedgeClimb()
@@ -712,24 +681,24 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
 
-        isTouchingWall=Physics2D.Raycast(wallCheck.position,transform.right,wallCheckDistance,whatIsGround);
-        
+        isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
+
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
-        Gizmos.DrawLine(wallCheck.position,new Vector3(wallCheck.position.x + wallCheckDistance,wallCheck.position.y,wallCheck.position.z));
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y, wallCheck.position.z));
 
-        Gizmos.DrawWireSphere(transform.position,Radius);
+        Gizmos.DrawWireSphere(transform.position, Radius);
 
-        Gizmos.DrawWireSphere(transform.position,Radius);
+        Gizmos.DrawWireSphere(transform.position, Radius);
     }
 
     public void setDragObject(Rigidbody2D obj)
     {
-        if(obj != null)
+        if (obj != null)
         {
             dragObject = obj;
         }
@@ -741,34 +710,34 @@ public class PlayerController : MonoBehaviour
 
 
     //NEW STUFF AFTER D5///////////////////////////
-    public float DashJumpTimer=1.5f;
-    public bool StartDJTimer=false;
+    public float DashJumpTimer = 1.5f;
+    public bool StartDJTimer = false;
     public void CheckDashJump()
     {
-        
-        if(StartDJTimer)
+
+        if (StartDJTimer)
         {
-            DashJumpTimer-=Time.deltaTime;
-            if(DashJumpTimer <= 0.0f)
+            DashJumpTimer -= Time.deltaTime;
+            if (DashJumpTimer <= 0.0f)
             {
-                StartDJTimer=false;
-                DashJumpTimer=1.5f;
-                jumpForce=16.0f;
+                StartDJTimer = false;
+                DashJumpTimer = 1.5f;
+                jumpForce = 16.0f;
             }
             else
             {
-                if(Input.GetButtonDown("Dash"))
+                if (Input.GetButtonDown("Dash"))
                 {
-                    jumpForce=25.0f;
+                    jumpForce = 25.0f;
                 }
                 else
                 {
-                
+
                 }
             }
-            
+
         }
-        
+
     }
 
     public bool inFunction;
@@ -776,12 +745,12 @@ public class PlayerController : MonoBehaviour
 
     public void CheckBash()
     {
-        if(inFunction)
+        if (inFunction)
         {
-           if(Input.GetKeyDown(KeyCode.D))
-           {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
                 ForwardArrow.transform.position = BashAbleObj.transform.transform.position;
-  
+
                 ForwardArrow.SetActive(true);
 
                 UpArrow.SetActive(false);
@@ -792,13 +761,13 @@ public class PlayerController : MonoBehaviour
                 ZArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="Forward";
+                Bashdirection = "Forward";
 
-           }
-           if(Input.GetKey(KeyCode.E))
-           {
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
                 EArrow.transform.position = BashAbleObj.transform.transform.position;
-  
+
                 EArrow.SetActive(true);
 
                 ForwardArrow.SetActive(false);
@@ -809,13 +778,13 @@ public class PlayerController : MonoBehaviour
                 ZArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="E";  
+                Bashdirection = "E";
 
-           }
-           if(Input.GetKey(KeyCode.Q))
-           {
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
                 QArrow.transform.position = BashAbleObj.transform.transform.position;
-  
+
                 QArrow.SetActive(true);
 
                 EArrow.SetActive(false);
@@ -826,11 +795,11 @@ public class PlayerController : MonoBehaviour
                 ZArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="Q"; 
+                Bashdirection = "Q";
 
-           }
-           if(Input.GetKeyDown(KeyCode.A))
-           {
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
                 BackwardArrow.transform.position = BashAbleObj.transform.transform.position;
 
                 BackwardArrow.SetActive(true);
@@ -843,14 +812,14 @@ public class PlayerController : MonoBehaviour
                 ZArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="Backward";
-           }
-           if(Input.GetKeyDown(KeyCode.S))
-           {
+                Bashdirection = "Backward";
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
                 DownArrow.transform.position = BashAbleObj.transform.transform.position;
-                
+
                 DownArrow.SetActive(true);
-                
+
                 EArrow.SetActive(false);
                 ForwardArrow.SetActive(false);
                 UpArrow.SetActive(false);
@@ -859,14 +828,14 @@ public class PlayerController : MonoBehaviour
                 ZArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="Down";
-           }
-           if(Input.GetKeyDown(KeyCode.W))
-           {
+                Bashdirection = "Down";
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
                 UpArrow.transform.position = BashAbleObj.transform.transform.position;
 
                 UpArrow.SetActive(true);
-                
+
                 ForwardArrow.SetActive(false);
                 BackwardArrow.SetActive(false);
                 DownArrow.SetActive(false);
@@ -875,10 +844,10 @@ public class PlayerController : MonoBehaviour
                 ZArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="Up";
-           }
-           if(Input.GetKeyDown(KeyCode.Z))
-           {
+                Bashdirection = "Up";
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
                 ZArrow.transform.position = BashAbleObj.transform.transform.position;
 
                 ZArrow.SetActive(true);
@@ -891,11 +860,11 @@ public class PlayerController : MonoBehaviour
                 UpArrow.SetActive(false);
                 CArrow.SetActive(false);
 
-                Bashdirection="Z";
-           }
+                Bashdirection = "Z";
+            }
 
-           if(Input.GetKeyDown(KeyCode.C))
-           {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
                 CArrow.transform.position = BashAbleObj.transform.transform.position;
 
                 CArrow.SetActive(true);
@@ -908,53 +877,53 @@ public class PlayerController : MonoBehaviour
                 UpArrow.SetActive(false);
                 ZArrow.SetActive(false);
 
-                Bashdirection="C";
-           }
+                Bashdirection = "C";
+            }
         }
-        
+
     }
 
-    public float SlowMotionTimer=0.05f;
-    public bool StartSloMoTimer=false;
+    public float SlowMotionTimer = 0.05f;
+    public bool StartSloMoTimer = false;
 
 
     private void SlowMotion()
     {
-        if(StartSloMoTimer)
+        if (StartSloMoTimer)
         {
-            SlowMotionTimer-=Time.deltaTime;
-            if(SlowMotionTimer == 0.0f)
+            SlowMotionTimer -= Time.deltaTime;
+            if (SlowMotionTimer == 0.0f)
             {
-                
-                Time.timeScale=0f;
+
+                Time.timeScale = 0f;
                 Time.fixedDeltaTime = 0.5f * Time.timeScale;
 
-                StartSloMoTimer=false;
-                SlowMotionTimer=0.05f;
+                StartSloMoTimer = false;
+                SlowMotionTimer = 0.05f;
             }
-            else if(SlowMotionTimer <= 0.05f && SlowMotionTimer > 0.04f )
+            else if (SlowMotionTimer <= 0.05f && SlowMotionTimer > 0.04f)
             {
-                Time.timeScale=0.1f;
+                Time.timeScale = 0.1f;
                 Time.fixedDeltaTime = 0.5f * Time.timeScale;
             }
-            else if(SlowMotionTimer <= 0.04f && SlowMotionTimer > 0.03f )
+            else if (SlowMotionTimer <= 0.04f && SlowMotionTimer > 0.03f)
             {
-                Time.timeScale=0.08f;
+                Time.timeScale = 0.08f;
                 Time.fixedDeltaTime = 0.5f * Time.timeScale;
             }
-            else if(SlowMotionTimer <= 0.03f && SlowMotionTimer > 0.02f )
+            else if (SlowMotionTimer <= 0.03f && SlowMotionTimer > 0.02f)
             {
-                Time.timeScale=0.06f;
+                Time.timeScale = 0.06f;
                 Time.fixedDeltaTime = 0.5f * Time.timeScale;
             }
-            else if(SlowMotionTimer <= 0.02f && SlowMotionTimer > 0.01f )
+            else if (SlowMotionTimer <= 0.02f && SlowMotionTimer > 0.01f)
             {
-                Time.timeScale=0.04f;
+                Time.timeScale = 0.04f;
                 Time.fixedDeltaTime = 0.5f * Time.timeScale;
             }
-            else if(SlowMotionTimer <= 0.01f && SlowMotionTimer > 0f )
+            else if (SlowMotionTimer <= 0.01f && SlowMotionTimer > 0f)
             {
-                Time.timeScale=0.02f;
+                Time.timeScale = 0.02f;
                 Time.fixedDeltaTime = 0.5f * Time.timeScale;
             }
         }
@@ -965,42 +934,42 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D[] Rays = Physics2D.CircleCastAll(transform.position, Radius, Vector3.forward);
         foreach (RaycastHit2D ray in Rays)
         {
-            NearToBashAbleObj=false;
-            if(ray.collider.tag == "Bashable")
+            NearToBashAbleObj = false;
+            if (ray.collider.tag == "Bashable")
             {
-                canBash=true;
-                NearToBashAbleObj=true;
+                canBash = true;
+                NearToBashAbleObj = true;
                 BashAbleObj = ray.collider.transform.gameObject;
                 break;
             }
         }
-        if(NearToBashAbleObj && canBash)
+        if (NearToBashAbleObj && canBash)
         {
-            if(Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 FindObjectOfType<AudioManager>().Play("BashEnter");
                 FindObjectOfType<AudioManager>().Play("InSM");
-                Time.timeScale=0f;
+                Time.timeScale = 0f;
                 Time.fixedDeltaTime = 0.01f * Time.timeScale;
-                
-                isChoosingDir=true;
-                inFunction=true;
+
+                isChoosingDir = true;
+                inFunction = true;
             }
-            else if(isChoosingDir && Input.GetKeyUp(KeyCode.Mouse1))
+            else if (isChoosingDir && Input.GetKeyUp(KeyCode.Mouse1))
             {
                 FindObjectOfType<AudioManager>().Stop("InSM");
                 FindObjectOfType<AudioManager>().Play("BashExit");
                 CreateBashDust();
                 Time.timeScale = 1f;
                 Time.fixedDeltaTime = 0.01f * Time.timeScale;
-                
-                inFunction=false;
-                isChoosingDir=false;
-                isBashing=true;
+
+                inFunction = false;
+                isChoosingDir = false;
+                isBashing = true;
             }
         }
 
-        if(isBashing)
+        if (isBashing)
         {
             ForwardArrow.SetActive(false);
             UpArrow.SetActive(false);
@@ -1012,65 +981,65 @@ public class PlayerController : MonoBehaviour
             CArrow.SetActive(false);
 
             //Debug.Log(Bashdirection);
-            if(BashTime > 0)
+            if (BashTime > 0)
             {
                 BashTime -= Time.deltaTime;
-                if(Bashdirection=="Up")
+                if (Bashdirection == "Up")
                 {
-                    rb.velocity = new Vector2(0,BashPower);
+                    rb.velocity = new Vector2(0, BashPower);
                 }
-                else if(Bashdirection=="Down")
+                else if (Bashdirection == "Down")
                 {
-                    rb.velocity = new Vector2(0,-BashPower);
+                    rb.velocity = new Vector2(0, -BashPower);
                 }
-                else if(Bashdirection=="Forward")
+                else if (Bashdirection == "Forward")
                 {
-                    rb.velocity = new Vector2(BashPower,0);
+                    rb.velocity = new Vector2(BashPower, 0);
                 }
-                else if(Bashdirection=="Backward")
+                else if (Bashdirection == "Backward")
                 {
-                    rb.velocity = new Vector2(-BashPower,0);
+                    rb.velocity = new Vector2(-BashPower, 0);
                 }
-                else if(Bashdirection=="E")
+                else if (Bashdirection == "E")
                 {
-                    if(!isFacingRight)
+                    if (!isFacingRight)
                     {
                         Flip();
                     }
-                    rb.velocity = new Vector2(BashPower-(BashPower/4),BashPower-(BashPower/4));
+                    rb.velocity = new Vector2(BashPower - (BashPower / 4), BashPower - (BashPower / 4));
                 }
-                else if(Bashdirection=="Q")
+                else if (Bashdirection == "Q")
                 {
-                    if(isFacingRight)
+                    if (isFacingRight)
                     {
                         Flip();
                     }
-                    rb.velocity = new Vector2(-BashPower-(BashPower/4),BashPower-(BashPower/4));
+                    rb.velocity = new Vector2(-BashPower - (BashPower / 4), BashPower - (BashPower / 4));
                 }
-                else if(Bashdirection=="Z")
+                else if (Bashdirection == "Z")
                 {
-                    if(isFacingRight)
+                    if (isFacingRight)
                     {
                         Flip();
                     }
-                    rb.velocity = new Vector2(-BashPower-(BashPower/4),-BashPower-(BashPower/4));
+                    rb.velocity = new Vector2(-BashPower - (BashPower / 4), -BashPower - (BashPower / 4));
                 }
-                else if(Bashdirection=="C")
+                else if (Bashdirection == "C")
                 {
-                    if(!isFacingRight)
+                    if (!isFacingRight)
                     {
                         Flip();
                     }
-                    rb.velocity = new Vector2(BashPower-(BashPower/4),-BashPower-(BashPower/4));
+                    rb.velocity = new Vector2(BashPower - (BashPower / 4), -BashPower - (BashPower / 4));
                 }
-                amountOfJumpsleft=2;
+                amountOfJumpsleft = 2;
             }
             else
             {
-                isBashing=false;
-                BashTime=BashTimeReset;
-                rb.velocity=new Vector2(rb.velocity.x-(rb.velocity.x/4),rb.velocity.y-(rb.velocity.y/4));
-                canBash=false;
+                isBashing = false;
+                BashTime = BashTimeReset;
+                rb.velocity = new Vector2(rb.velocity.x - (rb.velocity.x / 4), rb.velocity.y - (rb.velocity.y / 4));
+                canBash = false;
             }
         }
     }
@@ -1079,17 +1048,12 @@ public class PlayerController : MonoBehaviour
     //NEW STUFF AFTER D6///////////////////////////////////////////////////////////////////////////////////////////////////////
     public void BugFixes()
     {
-        if(isGrounded && isTouchingWall)
+        if (isGrounded && isTouchingWall)
         {
-            isWallSliding=false;
+            isWallSliding = false;
         }
     }
-
-    
-
-
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-                           
+
+
 }
