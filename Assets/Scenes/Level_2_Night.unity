@@ -65671,6 +65671,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a645e98929320a409e583d38409b523, type: 3}
+--- !u!1 &1187266820 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8763781450879597769, guid: 7a645e98929320a409e583d38409b523, type: 3}
+  m_PrefabInstance: {fileID: 1187266819}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1189251373
 GameObject:
   m_ObjectHideFlags: 0
@@ -71831,6 +71836,7 @@ MonoBehaviour:
   QArrow: {fileID: 467881209}
   ZArrow: {fileID: 933468157}
   CArrow: {fileID: 726953079}
+  skipObjectiveButton: {fileID: 1187266820}
   DashJumpTimer: 2
   StartDJTimer: 0
   inFunction: 0
