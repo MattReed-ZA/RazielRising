@@ -12351,7 +12351,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &290050470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12694,7 +12694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &348660704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14139,6 +14139,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1365198329}
     - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: levelLoadr
       value: 
