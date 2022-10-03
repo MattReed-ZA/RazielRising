@@ -65541,6 +65541,38 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3455946024268605327, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1563
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455946024268605327, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575119009591681593, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575119009591681593, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5575119009591681593, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5944684536670890369, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5944684536670890369, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015541728476479523, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: crossFadeObj
       value: 
