@@ -48109,6 +48109,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1365198329}
+    - target: {fileID: 9015541730376358973, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: levelLoadr
       value: 
       objectReference: {fileID: 1544181335}
