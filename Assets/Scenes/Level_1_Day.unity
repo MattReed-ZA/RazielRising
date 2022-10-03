@@ -14253,6 +14253,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9448140e263978a499554e1330f630ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &514982560 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8763781450879597769, guid: 7a645e98929320a409e583d38409b523, type: 3}
+  m_PrefabInstance: {fileID: 514982557}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &518518141
 GameObject:
   m_ObjectHideFlags: 0
@@ -27235,6 +27240,7 @@ MonoBehaviour:
   QArrow: {fileID: 225675029}
   ZArrow: {fileID: 1957836352}
   CArrow: {fileID: 1878138505}
+  skipObjectiveButton: {fileID: 514982560}
   DashJumpTimer: 2
   StartDJTimer: 0
   inFunction: 0

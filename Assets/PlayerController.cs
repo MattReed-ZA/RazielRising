@@ -199,19 +199,30 @@ public class PlayerController : MonoBehaviour
 
     //FOR CHECKPOINTS////////////////////////////
     GameObject[] checkpoints;
+    [SerializeField] private GameObject skipObjectiveButton;
 
     public void skipObjective()
     {
+        int cpIndex = 0;
+
         if (checkpoints != null)
         {
             foreach (GameObject checkpoint in checkpoints)
             {
+                
+                cpIndex++;
+
+                if (cpIndex == checkpoints.Length)
+                {
+                    skipObjectiveButton.SetActive(false);
+                }
+
                 if (transform.position.x < checkpoint.transform.position.x)
                 {
                     Time.timeScale = 1f;
 
                     Vector3 newPos;
-                    newPos.x = checkpoint.transform.position.x;
+                    newPos.x = checkpoint.transform.position.x + 1.5f;
                     newPos.y = checkpoint.transform.position.y;
                     newPos.z = transform.position.z;
 
