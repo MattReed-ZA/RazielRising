@@ -48222,6 +48222,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9448140e263978a499554e1330f630ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1187266822 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8763781450879597769, guid: 7a645e98929320a409e583d38409b523, type: 3}
+  m_PrefabInstance: {fileID: 1187266819}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1195260691
 GameObject:
   m_ObjectHideFlags: 0
@@ -49191,7 +49196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1277181912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49239,7 +49244,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1277181911}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 254.3, y: 49.7, z: -19.948364}
+  m_LocalPosition: {x: 485.19, y: 189.16, z: -19.948364}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -51187,6 +51192,7 @@ MonoBehaviour:
   QArrow: {fileID: 467881209}
   ZArrow: {fileID: 933468157}
   CArrow: {fileID: 726953079}
+  skipObjectiveButton: {fileID: 1187266822}
   DashJumpTimer: 2
   StartDJTimer: 0
   inFunction: 0
