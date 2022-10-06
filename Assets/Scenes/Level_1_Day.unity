@@ -12328,7 +12328,7 @@ GameObject:
   - component: {fileID: 290050470}
   - component: {fileID: 290050469}
   - component: {fileID: 290050473}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: DeathScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12394,7 +12394,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -500
   m_TargetDisplay: 0
 --- !u!224 &290050472
 RectTransform:
@@ -12688,13 +12688,13 @@ GameObject:
   - component: {fileID: 348660706}
   - component: {fileID: 348660705}
   - component: {fileID: 348660707}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &348660704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26208,8 +26208,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274636290}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 167.15, y: 17.02, z: 0}
-  m_LocalScale: {x: 7.2481875, y: 7.2481875, z: 7.2481875}
+  m_LocalPosition: {x: 167.15, y: 17.9, z: 0}
+  m_LocalScale: {x: 9.920594, y: 9.920594, z: 9.920594}
   m_Children: []
   m_Father: {fileID: 691055390}
   m_RootOrder: 16
