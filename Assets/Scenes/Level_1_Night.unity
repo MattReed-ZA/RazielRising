@@ -10846,6 +10846,22 @@ Transform:
   m_Father: {fileID: 1354597814}
   m_RootOrder: 172
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &282912038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 70493423}
+  m_Layer: 0
+  m_Name: 'Recovery GameObject for Transform (ID in file: 70493423)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &286923694
 GameObject:
   m_ObjectHideFlags: 0
@@ -63196,7 +63212,7 @@ GameObject:
   - component: {fileID: 1756169911}
   - component: {fileID: 1756169910}
   - component: {fileID: 1756169909}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: DeathScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63276,7 +63292,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -500
   m_TargetDisplay: 0
 --- !u!224 &1756169913
 RectTransform:
@@ -70717,13 +70733,13 @@ GameObject:
   - component: {fileID: 1870829214}
   - component: {fileID: 1870829213}
   - component: {fileID: 1870829212}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!225 &1870829212
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -71433,6 +71449,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1901570175
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1850399416}
+  m_Layer: 0
+  m_Name: 'Recovery GameObject for Transform (ID in file: 1850399416)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1906304515
 GameObject:
   m_ObjectHideFlags: 0
