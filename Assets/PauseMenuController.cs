@@ -17,7 +17,9 @@ public class PauseMenuController : MonoBehaviour
     [SerializeField] GameObject SkipBtn;
     [SerializeField] GameObject LoadBtn;
 
-    public LevelLoader levelLoadr;    
+    public LevelLoader levelLoadr;   
+
+    [SerializeField] AudioSource audio; 
 
     void Start()
     {
@@ -52,6 +54,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Resume()
     {
+        PlayClickSound();
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
@@ -59,6 +62,7 @@ public class PauseMenuController : MonoBehaviour
 
     void Pause()
     {
+        PlayClickSound();
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
@@ -66,6 +70,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Quit()
     {
+        PlayClickSound();
         if(gameObject.activeSelf)
         {
             levelLoadr.fadeToLevel("MenuScene");
@@ -80,6 +85,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void SkipLevel()
     {
+        PlayClickSound();
         if(gameObject.activeSelf)
         {
             levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex + 1);
@@ -94,6 +100,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Restart()
     {
+        PlayClickSound();
         if(gameObject.activeSelf)
         {
             levelLoadr.fadeToNextLevel(SceneManager.GetActiveScene().buildIndex);
@@ -104,5 +111,10 @@ public class PauseMenuController : MonoBehaviour
             Time.timeScale = 1f;
             isPaused = false;
         }
+    }
+
+    public void PlayClickSound()
+    {
+        audio.Play();
     }
 }
