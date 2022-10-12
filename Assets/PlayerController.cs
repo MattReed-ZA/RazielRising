@@ -138,6 +138,7 @@ public class PlayerController : MonoBehaviour
 
     public void saveGame()
     {
+        pauseMenu.PlayClickSound();
         bool isSaved = SaveSystem.SavePlayer(this);
 
         if (isSaved)
@@ -149,6 +150,7 @@ public class PlayerController : MonoBehaviour
 
     public void loadGame()
     {
+        pauseMenu.PlayClickSound();
         SaveSystem.SetLoadFlag(true);
         PlayerData loadData = SaveSystem.LoadPlayer();
 
@@ -203,6 +205,7 @@ public class PlayerController : MonoBehaviour
 
     public void skipObjective()
     {
+        pauseMenu.PlayClickSound();
         int cpIndex = 0;
 
         if (checkpoints != null)

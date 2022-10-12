@@ -14211,6 +14211,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4281767920900765018, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4806441181498535257, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -14253,6 +14257,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7888456255026948809, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8683447618189658525, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9015541728476479523, guid: 7a645e98929320a409e583d38409b523, type: 3}
@@ -33658,7 +33666,7 @@ SpriteRenderer:
   m_Size: {x: 8.225, y: 3.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1877925871
