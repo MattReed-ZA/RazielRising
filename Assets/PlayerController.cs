@@ -102,6 +102,13 @@ public class PlayerController : MonoBehaviour
         bashObjRelease.Play();
     }
 
+    public ParticleSystem CheckpointPS;
+
+    void CreateCPS()
+    {
+        CheckpointPS.Play();
+    }
+
     ///////////////////////////////////
 
     //FOR RESPAWNING///////////////////
@@ -297,6 +304,14 @@ public class PlayerController : MonoBehaviour
             canNormalJump = false;
             canWallJump = false;
         }
+        // if(isWallSliding)
+        // {
+        //     FindObjectOfType<AudioManager>().Play("WallSlide");
+        // }
+        // else
+        // {
+        //     FindObjectOfType<AudioManager>().Stop("WallSlide");
+        // }
 
     }
 
@@ -320,6 +335,7 @@ public class PlayerController : MonoBehaviour
         {
             respawnPoint = rb.position;
             FindObjectOfType<AudioManager>().Play("Checkpoint");
+            CreateCPS();
         }
         else if (collision.tag == "Draggable")
         {
@@ -956,7 +972,7 @@ public class PlayerController : MonoBehaviour
         }
         if (NearToBashAbleObj && canBash)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.L))
             {
                 FindObjectOfType<AudioManager>().Play("BashEnter");
                 FindObjectOfType<AudioManager>().Play("InSM");
@@ -966,7 +982,7 @@ public class PlayerController : MonoBehaviour
                 isChoosingDir = true;
                 inFunction = true;
             }
-            else if (isChoosingDir && Input.GetKeyUp(KeyCode.Mouse1))
+            else if (isChoosingDir && Input.GetKeyUp(KeyCode.L))
             {
                 FindObjectOfType<AudioManager>().Stop("InSM");
                 FindObjectOfType<AudioManager>().Play("BashExit");

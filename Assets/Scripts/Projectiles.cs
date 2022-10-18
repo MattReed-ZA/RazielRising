@@ -13,6 +13,9 @@ public class Projectiles : MonoBehaviour
     private float nextX;
     private float baseY;
     private float height;
+
+    [SerializeField]public AudioSource source;
+    [SerializeField]public AudioClip shoot;
     
     void Start()
     {
@@ -25,6 +28,7 @@ public class Projectiles : MonoBehaviour
         if(transform.position.x==TargetX || transform.position.y==Target.transform.position.y)
         {
             transform.position=Shooter.transform.position;
+            source.PlayOneShot(shoot);
         }
     }
 
