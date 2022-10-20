@@ -580,14 +580,15 @@ public class PlayerController : MonoBehaviour
         if (canNormalJump && (!isPulling || !isPushing) && (!isPulling || !isPushing))
         {
             CreateDust();
-            if (amountOfJumpsleft == 2)
-            {
-                FindObjectOfType<AudioManager>().Play("Jump");
-            }
-            if (amountOfJumpsleft == 1)
-            {
-                FindObjectOfType<AudioManager>().Play("Jump2");
-            }
+                if(amountOfJumpsleft == 2)
+                {
+                    FindObjectOfType<AudioManager>().Play("Jump");
+                }
+                else if(amountOfJumpsleft == 1)
+                {
+                    FindObjectOfType<AudioManager>().Play("Jump2");
+                }
+            
 
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             amountOfJumpsleft--;
