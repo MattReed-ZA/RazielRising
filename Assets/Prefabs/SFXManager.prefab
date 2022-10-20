@@ -46,21 +46,31 @@ MonoBehaviour:
   sounds:
   - name: Jump
     clip: {fileID: 8300000, guid: 05aac17a62c1eaf4fb1cdd8f0d3dafa9, type: 3}
-    volume: 0.398
+    volume: 0.299
+    pitch: 0
+    loop: 0
     source: {fileID: 0}
   - name: Dash
     clip: {fileID: 8300000, guid: b81970f2f798cda4d8b1cac1d4052c09, type: 3}
     volume: 0.398
+    pitch: 0
+    loop: 0
     source: {fileID: 0}
   - name: LillyPadBounce
     clip: {fileID: 8300000, guid: 5dfb053f4316dc04489b88f597a182aa, type: 3}
     volume: 0.398
+    pitch: 0
+    loop: 0
     source: {fileID: 0}
   - name: BashEnter
     clip: {fileID: 8300000, guid: 8db50403463618144b79488c9b92650e, type: 3}
-    volume: 0.398
+    volume: 0.45
+    pitch: 0
+    loop: 0
     source: {fileID: 0}
   - name: BashExit
     clip: {fileID: 8300000, guid: 6ea2d31a8615f00419bbb483f4a3a599, type: 3}
-    volume: 0.398
+    volume: 0.351
+    pitch: 0
+    loop: 0
     source: {fileID: 0}
