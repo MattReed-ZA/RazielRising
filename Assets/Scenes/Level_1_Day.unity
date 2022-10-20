@@ -14175,6 +14175,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 190934460}
     m_Modifications:
+    - target: {fileID: 798386922809005982, guid: 7a645e98929320a409e583d38409b523, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 20.832031
+      objectReference: {fileID: 0}
     - target: {fileID: 1172961511502307195, guid: 7a645e98929320a409e583d38409b523, type: 3}
       propertyPath: m_Name
       value: PauseMenu
