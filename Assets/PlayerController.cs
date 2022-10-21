@@ -240,6 +240,8 @@ public class PlayerController : MonoBehaviour
 
                     pauseMenu.Resume();
 
+                    respawnPoint = transform.position;
+
                     return;
                 }
             }
