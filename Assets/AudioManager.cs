@@ -6,7 +6,8 @@ public class AudioManager : MonoBehaviour
 {
     public Sound[] sounds;
     public static AudioManager instance;
-    // Start is called before the first frame update
+
+    [SerializeField] public AudioMixerGroup audioMixer;
     void Awake()
     {
         if(instance==null)
@@ -27,6 +28,7 @@ public class AudioManager : MonoBehaviour
             s.source.volume=s.volume;
 
             s.source.loop=s.loop;
+            s.source.outputAudioMixerGroup = audioMixer;
         }
     }
 
